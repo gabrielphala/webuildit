@@ -1,0 +1,30 @@
+{{~ scope 'profile' }}
+
+<div class="container__padded">
+    <div class="container__title">
+        <h1>Profile</h1>
+        <p>Update your details</p>
+        <div class="container__title__hr"></div>
+    </div>
+    <form {{click "User.update(event)"}}>
+        <div class="error-container hide" id="profile-error">
+            <p></p>
+        </div>
+
+        <div class="input flex flex--a-center">
+            <label for="firstname" class="input__label" style="width: 15rem;">First name</label>
+            <input type="text" id="firstname" placeholder="First name" value="{{ userDetails.firstname }}">
+        </div>
+        <div class="input flex flex--a-center margin--top-1">
+            <label for="lastname" class="input__label" style="width: 15rem;">Last name</label>
+            <input type="text" id="lastname" placeholder="Last name" value="{{ userDetails.lastname }}">
+        </div>
+        <div class="input flex flex--a-center margin--top-1">
+            <label for="email-address" class="input__label" style="width: 15rem;">Email name</label>
+            <input type="email" id="email-address" placeholder="Email address" value="{{ userDetails.email }}">
+        </div>
+        <button class="btn btn--primary margin--top-2">Update details</button>
+    </form>
+
+    <button class="btn btn--primary margin--top-2" {{click "User.deleteAccount()"}}>Delete account</button>
+</div>

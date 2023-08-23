@@ -1,0 +1,54 @@
+.home{
+    &__showcase{
+        position: relative;
+        padding: 4rem;
+        padding-top: 9rem;
+        background-color: #fff2f9;
+
+        &__caption{
+            h1{
+                font-size: 5rem;
+            }
+        }
+
+        img{
+            position: absolute;
+            left: 26rem;
+            bottom: 3rem;
+            width: 37rem;
+        }
+    }
+
+    &__title{
+        margin-top: 5rem;
+        margin-bottom: 7rem;
+
+        h1{
+            font-size: 2.7rem;
+        }
+
+        &__hr{
+            width: 15rem;
+            height: 1px;
+            background-color: #edbdbd;
+        }
+    }
+
+    &__partners{
+        margin-bottom: 5rem;
+
+        &__list{
+            &__item{
+                &:not(:last-child){
+                    margin-right: 2rem;
+                }
+                
+                img{
+                    height: 17rem;
+                    border-radius: 6px;
+                    margin-bottom: 1rem;
+                }
+            }
+        }
+    }
+}

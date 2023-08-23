@@ -1,0 +1,42 @@
+{{~ scope 'sign.up' }}
+
+<div class="auth__main flex">
+    <div class="auth__main__illustration">
+        <div class="auth__main__illustration__header">
+            <img src="/assets/logo/svg/logo-custom.svg" alt="">
+        </div>
+        <div class="auth__main__illustration__body">
+            <h1 class="flex flex--column">
+                <span>Price</span>
+                <span>Comparison</span>
+                <span>Made</span>
+                <span>Easy</span>
+            </h1>
+            <img src="/assets/illustrations/Research paper-amico.svg" alt="">
+            <p>Don't waste any more time comparing prices</p>
+            <p>Fair prices just a click away</p>
+        </div>
+    </div>
+    <form class="auth__main__form" {{submit "User.signUp(event)"}}>
+        <div class="auth__main__form__header">
+            <h1>Sign up</h1>
+            <p>Sign up to manage prices easier</p>
+        </div>
+        <div class="auth__main__form__body">
+            <div class="error-container hide" id="auth-error">
+                <p></p>
+            </div>
+
+            <div class="input"><input type="text" id="firstname" placeholder="First name"></div>
+            <div class="input"><input type="text" id="lastname" placeholder="Last name"></div>
+            <div class="input"><input type="email" id="email-address" placeholder="Email address"></div>
+            <div class="input"><input type="password" id="password" placeholder="Password"></div>
+            <div class="input"><input type="password" id="password-again" placeholder="Password again"></div>
+            
+            <div class="flex flex--a-center margin--top-2">
+                <button class="btn btn--primary margin--right-1">Sign up</button>
+                <p><a href="/sign-in" {{click "Util.nav(event)"}}>Already have an account? Sign in</a></p>
+            </div>
+        </div>
+    </form>
+</div>

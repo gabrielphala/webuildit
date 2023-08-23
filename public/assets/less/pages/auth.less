@@ -1,0 +1,41 @@
+.auth{
+    &__main{
+        &__illustration{
+            flex: 0 0 50rem;
+            background-color: #fddada;
+            border-radius: 6px;
+            height: calc(100vh - 4rem);
+            margin: 2rem;
+            padding: 2rem;
+
+            &__header{
+                img{
+                    width: 15rem;
+                    margin-top: -6rem;
+                    margin-left: -2rem;
+                }
+            }
+
+            &__body{
+                img{
+                    width: 30rem;
+                }
+            }
+        }
+
+        &__form{
+            align-self: center;
+            flex: 0 0 37rem;
+
+            &__header{
+                margin-bottom: 3rem;
+            }
+
+            &__body{
+                .input:not(:last-child){
+                    margin-bottom: 1rem;
+                }
+            }
+        }
+    }
+}

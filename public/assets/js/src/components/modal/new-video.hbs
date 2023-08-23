@@ -1,0 +1,49 @@
+{{~fetch '/course/get/unique-id/' + query.ui | as 'course' }}
+
+<div class="modal modal--closed flex--a-start flex--j-center" id="new-video-modal">
+    <form class="modal__main card" onsubmit "Video.addName()">
+        <div class="card__header flex flex--a-center flex--j-space-between">
+            <div>
+                <h1>New video.</h1>
+                <p>Add videos to your course</p>
+            </div>
+            <svg class="image--icon" onclick "Util.closeModal('new-video')">
+                <use href="#cross"></use>
+            </svg>
+        </div>
+        <div class="card__body flex">
+            <input id="course-id" value="{{ course.details._id }}" hidden>
+            <div class="flex" style="flex: 0 0 25rem; flex-direction: column;">
+                <div class="image-upload-preview margin--right-2">
+                    <div class="image--back image-upload-preview__back" id="thumbnail-preview"
+                        style="background-image: url('/assets/uploads/thumbnails/default-video.png');"></div>
+                    <p class="pos--abs pos--center" id="thumbnail-progress">0.0% Complete</p>
+                </div>
+                <input type="file" id="video-thumbnail" onchange "Video.addThumbnail()" hidden>
+                <label for="video-thumbnail" style="text-align: center;">Select thumbnail</label>
+            </div>
+            <div style="flex: 1;">
+                <div class="error-container hide" id="video-error">
+                    <p></p>
+                </div>
+                
+                <div class="input">
+                    <input type="text" id="video-name" placeholder="Video name e.g. Python variables">
+                </div>
+                <div class="input margin--top-2">
+                    <textarea id="video-description" placeholder="Video description"></textarea>
+                </div>
+                <div class="input margin--top-2 flex">
+                    <label for="video-file">Select video file</label>
+                    <input type="file" id="video-file" onchange "Video.addVideoFile()" hidden>
+                    <span style="margin: 0 2rem;">|</span>
+                    <p id="video-progress">0% Complete</p>
+                </div>
+            </div>
+        </div>
+        <div class="card__footer">
+            <button class="btn btn--primary">Create video</button>
+            <button type="button" class="btn" onclick "Util.closeModal('new-video')">Cancel</button>
+        </div>
+    </form>
+</div>

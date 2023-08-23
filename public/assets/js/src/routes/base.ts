@@ -1,0 +1,39 @@
+import { Route } from "oddlyjs"
+
+export default (): void => {
+    Route({
+        name: 'home',
+        url: '/',
+        layoutpath: 'base'
+    })
+
+    Route({
+        name: 'search',
+        url: '/search',
+        layoutpath: 'base'
+    })
+
+    Route({
+        name: 'history',
+        url: '/history',
+        layoutpath: 'info'
+    })
+
+    Route({
+        name: 'profile',
+        url: '/profile',
+        layoutpath: 'info'
+    })
+
+    Route({
+        name: 'sign.up',
+        url: '/sign-up',
+        layoutpath: 'auth'
+    })
+
+    Route({
+        name: 'sign.in',
+        url: '/sign-in',
+        layoutpath: 'auth'
+    })
+}
