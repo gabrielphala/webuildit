@@ -20,6 +20,12 @@ export default (): void => {
     })
 
     Route({
+        name: 'plan.view',
+        url: '/plan/view',
+        layoutpath: 'info'
+    })
+
+    Route({
         name: 'history',
         url: '/history',
         layoutpath: 'info'

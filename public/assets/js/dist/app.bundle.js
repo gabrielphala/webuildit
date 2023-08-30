@@ -3179,6 +3179,11 @@ exports["default"] = () => {
         layoutpath: 'info'
     });
     (0, oddlyjs_1.Route)({
+        name: 'plan.view',
+        url: '/plan/view',
+        layoutpath: 'info'
+    });
+    (0, oddlyjs_1.Route)({
         name: 'history',
         url: '/history',
         layoutpath: 'info'

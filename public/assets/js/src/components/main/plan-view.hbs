@@ -1,0 +1,12 @@
+{{~ scope 'plan.view' }}
+{{~ fetch '/plan/get/by/id/' + query.no | as 'plan'}}
+
+<div class="container__padded" style="width: 67%;">
+    <div class="container__title">
+        <h1>Plan manager</h1>
+        <p>View and edit your plan from here</p>
+        <div class="container__title__hr"></div>
+    </div>
+
+    {{component 'modal/new-plan'}}
+</div>
