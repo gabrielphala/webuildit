@@ -279,8 +279,8 @@ class KoliEngine {
         // do not cache any component that uses helpers like 'fetch'
         // it will prevent the same component from being compiled a second time even thou
         // the fetch would return different data
-        // if (!this._hasInternalDataFetch)
-        //     this._cache.store(cacheKey, this._content);
+        if (!this._hasInternalDataFetch)
+            this._cache.store(cacheKey, this._content);
     }
     async render(config = {}) {
         try {
@@ -1470,11 +1470,6 @@ exports["default"] = new (class Layouts {
         if (!contentRegenate) {
             Middleware_1.default.once(() => {
                 Util_1.default.prependToBody(layout.content);
-                // Components.initNavEvents();
-                // Components.initHighlightNavItems();
-                // const router = Router.use(Router.currentRoute.name);
-                // Components.initEvents('loaded');
-                // Components.initOnLoaded()
                 Router_1.default.currentRoute.initDOMLoaded();
             });
         }
@@ -1490,12 +1485,6 @@ exports["default"] = new (class Layouts {
         Middleware_1.default.once(() => {
             layout.removeUnusedElements();
             layout.addNewElements();
-            // Util.prependToBody(layout.content);
-            // Components.initNavEvents();
-            // Components.initHighlightNavItems();
-            // const router = Router.use(Router.currentRoute.name);
-            // Components.initEvents('loaded');
-            // Components.initOnLoaded()
             Router_1.default.currentRoute.initDOMLoaded();
         });
     }
@@ -2875,6 +2864,54 @@ const middleware_1 = __importDefault(__webpack_require__(/*! ./middleware */ "./
 
 /***/ }),
 
+/***/ "./public/assets/js/src/events/Plan.ts":
+/*!*********************************************!*\
+  !*** ./public/assets/js/src/events/Plan.ts ***!
+  \*********************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const oddlyjs_1 = __webpack_require__(/*! oddlyjs */ "../oddlyjs/index.ts");
+const error_container_1 = __webpack_require__(/*! ../helpers/error-container */ "./public/assets/js/src/helpers/error-container.ts");
+const modal_1 = __webpack_require__(/*! ../helpers/modal */ "./public/assets/js/src/helpers/modal.ts");
+const fetch_1 = __importDefault(__webpack_require__(/*! ../helpers/fetch */ "./public/assets/js/src/helpers/fetch.ts"));
+exports["default"] = () => new (class Plan {
+    constructor() {
+        new oddlyjs_1.Events(this);
+    }
+    async add(e) {
+        e.preventDefault();
+        const response = await (0, fetch_1.default)('/plan/add', {
+            body: {
+                name: $('#plan-name').val(),
+                plan_for: $('#plan-for').val(),
+                length_area: $('#area-length').val(),
+                height_area: $('#area-height').val()
+            }
+        });
+        if (response.successful) {
+            (0, modal_1.closeModal)('new-plan');
+            return (0, oddlyjs_1.Refresh)();
+        }
+        (0, error_container_1.showError)('plan', response.error);
+    }
+    async removePlan(id) {
+        const response = await (0, fetch_1.default)('/plan/remove', {
+            body: {
+                id
+            }
+        });
+        (0, oddlyjs_1.Refresh)();
+    }
+});
+
+
+/***/ }),
+
 /***/ "./public/assets/js/src/events/Util.ts":
 /*!*********************************************!*\
   !*** ./public/assets/js/src/events/Util.ts ***!
@@ -2943,9 +2980,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const user_1 = __importDefault(__webpack_require__(/*! ./user */ "./public/assets/js/src/events/user.ts"));
+const Plan_1 = __importDefault(__webpack_require__(/*! ./Plan */ "./public/assets/js/src/events/Plan.ts"));
 const Util_1 = __importDefault(__webpack_require__(/*! ./Util */ "./public/assets/js/src/events/Util.ts"));
 exports["default"] = () => {
     (0, user_1.default)();
+    (0, Plan_1.default)();
     (0, Util_1.default)();
 };
 
@@ -2984,7 +3023,7 @@ exports["default"] = () => new (class User {
         });
         if (response.successful) {
             oddlyjs_1.Environment.put('userDetails', response.userDetails);
-            return (0, oddlyjs_1.Next)('/history');
+            return (0, oddlyjs_1.Next)('/plans');
         }
         (0, error_container_1.showError)('auth', response.error);
     }
@@ -2998,7 +3037,7 @@ exports["default"] = () => new (class User {
         });
         if (response.successful) {
             oddlyjs_1.Environment.put('userDetails', response.userDetails);
-            return (0, oddlyjs_1.Next)('/history');
+            return (0, oddlyjs_1.Next)('/plans');
         }
         (0, error_container_1.showError)('auth', response.error);
     }
@@ -3133,6 +3172,11 @@ exports["default"] = () => {
         name: 'search',
         url: '/search',
         layoutpath: 'base'
+    });
+    (0, oddlyjs_1.Route)({
+        name: 'plans',
+        url: '/plans',
+        layoutpath: 'info'
     });
     (0, oddlyjs_1.Route)({
         name: 'history',

@@ -1,0 +1,39 @@
+<div class="modal modal--closed flex--a-start flex--j-center" id="new-plan-modal">
+    <form class="modal__main card" {{submit "Plan.add(event)"}}>
+        <div class="card__header flex flex--a-center flex--j-space-between">
+            <div>
+                <h1>New plan.</h1>
+                <p>Start new plan</p>
+            </div>
+            <svg class="image--icon" {{click "Util.closeModal('new-plan')"}}>
+                <use href="#cross"></use>
+            </svg>
+        </div>
+        <div class="card__body">
+            <div class="error-container hide" id="plan-error">
+                <p></p>
+            </div>
+
+            <div class="twin-inputs flex flex--j-space-between">
+                <div class="input">
+                    <input type="text" id="plan-name" placeholder="Plan name">
+                </div>
+                <div class="input">
+                    <input type="text" id="plan-for" placeholder="Plan for">
+                </div>
+            </div>
+            <div class="twin-inputs flex flex--j-space-between margin--top-1">
+                <div class="input">
+                    <input type="text" id="area-length" placeholder="Area length">
+                </div>
+                <div class="input">
+                    <input type="text" id="area-height" placeholder="Area height">
+                </div>
+            </div>
+        </div>
+        <div class="card__footer">
+            <button class="btn btn--primary">Create plan</button>
+            <button type="button" class="btn" {{click "Util.closeModal('new-plan')"}}>Cancel</button>
+        </div>
+    </form>
+</div>

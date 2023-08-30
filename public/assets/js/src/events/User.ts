@@ -27,7 +27,7 @@ export default () => new (class User {
         if (response.successful) {
             Environment.put('userDetails', response.userDetails);
 
-            return Next('/history')
+            return Next('/plans')
         }
 
         showError('auth', response.error)
@@ -46,7 +46,7 @@ export default () => new (class User {
         if (response.successful) {
             Environment.put('userDetails', response.userDetails);
 
-            return Next('/history')
+            return Next('/plans')
         }
 
         showError('auth', response.error)

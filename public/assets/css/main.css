@@ -250,6 +250,36 @@ li {
 .modal__main .card__header svg:hover {
   fill: darkred;
 }
+.table {
+  border-radius: 7px;
+  overflow: hidden;
+}
+.table__header__row,
+.table__body__row {
+  display: flex;
+  min-height: 4rem;
+  align-items: center;
+}
+.table__header__row__item,
+.table__body__row__item {
+  flex: 1;
+  padding: 0.5rem 0rem 0.5rem 1.4rem;
+}
+.table__header__row__item:last-child,
+.table__body__row__item:last-child {
+  padding-right: 1.4rem;
+  text-align: right;
+}
+.table__header {
+  margin-bottom: 0.4rem;
+  border-bottom: 1px solid #eee;
+}
+.table__header__row__item {
+  color: gray;
+}
+.table__body__row {
+  color: #7b7b7b;
+}
 .container__padded {
   width: 55%;
   margin: 5rem auto;

@@ -1,0 +1,48 @@
+{{~ scope 'plans' }}
+{{~ fetch '/plans/get/by/user' | as 'plans'}}
+
+<div class="container__padded" style="width: 67%;">
+    <div class="container__title">
+        <h1>Plans</h1>
+        <p>Keep track of your plans</p>
+        <div class="container__title__hr"></div>
+    </div>
+
+    <div class="card table">
+        <div class="table__header">
+            <ul class="table__header__row flex">
+                <li class="table__header__row__item">Plan no</li>
+                <li class="table__header__row__item">Plan name</li>
+                <li class="table__header__row__item">For</li>
+                <li class="table__header__row__item">Area length</li>
+                <li class="table__header__row__item">Area height</li>
+                <li class="table__header__row__item">Bricks</li>
+                <li class="table__header__row__item">Sand (kg)</li>
+                <li class="table__header__row__item">Cement (kg)</li>
+                <li class="table__header__row__item">...</li>
+            </ul>
+        </div>
+        <div class="table__body">
+            {{#each plans.plans}}
+                <ul class="table__body__row flex">
+                    <li class="table__body__row__item">{{this.plan_no}}</li>
+                    <li class="table__body__row__item">{{this.name}}</li>
+                    <li class="table__body__row__item">{{this.plan_for}}</li>
+                    <li class="table__body__row__item">{{this.length_area}}</li>
+                    <li class="table__body__row__item">{{this.height_area}}</li>
+                    <li class="table__body__row__item">{{this.brick_count}}</li>
+                    <li class="table__body__row__item">{{this.sand}}</li>
+                    <li class="table__body__row__item">{{this.cement}}</li>
+                    <li class="table__body__row__item flex" style="cursor: pointer; justify-content: flex-end;">
+                        <span class="margin--right-1">view</span>
+                        <span {{click "Plan.removePlan('<<this.id>>')"}}>remove</span>
+                    </li>
+                </ul>
+            {{/each}}
+        </div>
+    </div>
+
+    <button class="btn btn--primary margin--top-2" {{click "Util.openModal('new-plan')"}}>Create plan</button>
+
+    {{component 'modal/new-plan'}}
+</div>
