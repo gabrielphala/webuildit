@@ -1,7 +1,6 @@
-import Plan from "../models/Plan"
+import Opening from "../models/Opening"
 
 import v from "../helpers/Validation"
-import { makeId } from "../helpers/String";
 
 import { IAny, IResponse } from "../interfaces";
 
@@ -21,32 +20,30 @@ export default class PlanServices {
         return { bricks, cement, sand };
     }
 
-    static async add (wrapRes: IResponse, body: IAny, { userInfo }: IAny): Promise<IResponse> {
+    static async add (wrapRes: IResponse, body: IAny): Promise<IResponse> {
         try {
-            const { name, plan_for, length_area, height_area } = body;
+            const { kind, plan_id, length_area, height_area } = body;
 
             v.validate({
-                'Plan name': { value: name, min: 2, max: 50 },
-                'Plan for': { value: plan_for, min: 2, max: 50 },
                 'Area length': { value: length_area, max: 11 },
                 'Area height': { value: height_area, max: 11 }
             });
+
+            if (kind == 'select') throw 'Please select opening kind';
 
             if (isNaN(length_area) || !isNaN(length_area) && parseInt(length_area) <= 0) throw 'Area length must be a valid number';
             if (isNaN(height_area) || !isNaN(height_area) && parseInt(height_area) <= 0) throw 'Area height must be a valid number';
 
             const { bricks, cement, sand } = PlanServices.calculateMaterialUsage(length_area, height_area)
 
-            Plan.insert({
-                plan_no: makeId(5),
-                name,
-                user_id: userInfo.id,
-                plan_for,
+            Opening.insert({
+                kind,
+                plan_id,
                 length_area,
                 height_area,
-                brick_count: bricks,
-                cement,
-                sand
+                bricks_saved: bricks,
+                cement_saved: cement,
+                sand_saved: sand
             });
 
             wrapRes.successful = true;
@@ -55,29 +52,19 @@ export default class PlanServices {
         } catch (e) { throw e; }
     }
 
-    static async getUserPlans (wrapRes: IResponse, body: IAny, { userInfo }: IAny): Promise<IResponse> {
+    static async getOpeningsByPlanId (wrapRes: IResponse, body: IAny, req: IAny): Promise<IResponse> {
         try {
-            wrapRes.plans = await Plan.find({
-                condition: { user_id: userInfo.id, is_removed: false }
+            wrapRes.openings = await Opening.find({
+                condition: { plan_id: req.params.planId, is_removed: false }
             });
 
             return wrapRes;
         } catch (e) { throw e; }
     }
 
-    static async getPlanByUniqueId (wrapRes: IResponse, body: IAny, req: IAny): Promise<IResponse> {
+    static async removeOpening (wrapRes: IResponse, body: IAny, _: IAny): Promise<IResponse> {
         try {
-            wrapRes.details = (await Plan.findOne({
-                condition: { plan_no: req.params.planNo, is_removed: false }
-            })).toObject();
-
-            return wrapRes;
-        } catch (e) { throw e; }
-    }
-
-    static async removePlan (wrapRes: IResponse, body: IAny, _: IAny): Promise<IResponse> {
-        try {
-            await Plan.update({ id: body.id }, {
+            await Opening.update({ id: body.id }, {
                 is_removed: true
             })
 

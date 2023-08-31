@@ -34,7 +34,7 @@
                     <li class="table__body__row__item">{{this.sand}}</li>
                     <li class="table__body__row__item">{{this.cement}}</li>
                     <li class="table__body__row__item flex" style="cursor: pointer; justify-content: flex-end;">
-                        <span class="margin--right-1">view</span>
+                        <a href="/plan/view?pn={{this.plan_no}}" class="margin--right-1" {{click "Util.nav(event)"}}>view</a>
                         <span {{click "Plan.removePlan('<<this.id>>')"}}>remove</span>
                     </li>
                 </ul>

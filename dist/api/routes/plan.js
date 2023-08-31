@@ -8,6 +8,7 @@ const Plan_1 = __importDefault(require("../../services/Plan"));
 exports.default = (app) => {
     app.post('/plan/add', base_1.default.wrap_with_store(Plan_1.default.add));
     app.post('/plan/remove', base_1.default.wrap_with_store(Plan_1.default.removePlan));
+    app.post('/plan/get/by/unique-id/:planNo', base_1.default.wrap_with_request(Plan_1.default.getPlanByUniqueId));
     app.post('/plans/get/by/user', base_1.default.wrap_with_store(Plan_1.default.getUserPlans));
 };
 //# sourceMappingURL=plan.js.map

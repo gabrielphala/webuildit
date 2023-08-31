@@ -1,0 +1,45 @@
+{{~ fetch '/plan/get/by/unique-id/' + query.pn | as 'plan'}}
+
+<div class="modal modal--closed flex--a-start flex--j-center" id="new-opening-modal">
+    <form class="modal__main card" {{submit "Opening.add(event)"}}>
+        <div class="card__header flex flex--a-center flex--j-space-between">
+            <div>
+                <h1>New opening.</h1>
+                <p>Add opening to your plan</p>
+            </div>
+            <svg class="image--icon" onclick "Util.closeModal('new-opening')">
+                <use href="#cross"></use>
+            </svg>
+        </div>
+        <div class="card__body">
+            <input id="plan-id" value="{{ plan.details.id }}" hidden>
+
+            <div class="error-container hide" id="opening-error">
+                <p></p>
+            </div>
+
+            <div class="input">
+                <label class="input__label" for="opening-kind">Opening kind</label>
+                <select id="opening-kind">
+                    <option value="select">-- Select --</option>
+                    <option value="door">Door</option>
+                    <option value="window">Window</option>
+                </select>
+            </div>
+
+            <div class="twin-inputs flex flex--j-space-between margin--top-1">
+                <div class="input">
+                    <input type="text" id="area-length" placeholder="Area length (in meters)">
+                </div>
+                <div class="input">
+                    <input type="text" id="area-height" placeholder="Area height (in meters)">
+                </div>
+            </div>
+
+        </div>
+        <div class="card__footer">
+            <button class="btn btn--primary">Create opening</button>
+            <button type="button" class="btn" {{click "Util.closeModal('new-opening')"}}>Cancel</button>
+        </div>
+    </form>
+</div>

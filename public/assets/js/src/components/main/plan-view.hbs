@@ -1,5 +1,6 @@
 {{~ scope 'plan.view' }}
-{{~ fetch '/plan/get/by/id/' + query.no | as 'plan'}}
+{{~ fetch '/plan/get/by/unique-id/' + query.pn | as 'plan'}}
+{{~ fetch '/openings/get/by/plan-id/' + plan.details.id | as 'openings'}}
 
 <div class="container__padded" style="width: 67%;">
     <div class="container__title">
@@ -8,5 +9,36 @@
         <div class="container__title__hr"></div>
     </div>
 
-    {{component 'modal/new-plan'}}
+    <div class="card table">
+        <div class="table__header">
+            <ul class="table__header__row flex">
+                <li class="table__header__row__item">Kind</li>
+                <li class="table__header__row__item">Area length</li>
+                <li class="table__header__row__item">Area height</li>
+                <li class="table__header__row__item">Bricks saved</li>
+                <li class="table__header__row__item">Sand saved (kg)</li>
+                <li class="table__header__row__item">Cement saved (kg)</li>
+                <li class="table__header__row__item">...</li>
+            </ul>
+        </div>
+        <div class="table__body">
+            {{#each openings.openings}}
+                <ul class="table__body__row flex">
+                    <li class="table__body__row__item">{{this.kind}}</li>
+                    <li class="table__body__row__item">{{this.length_area}}</li>
+                    <li class="table__body__row__item">{{this.height_area}}</li>
+                    <li class="table__body__row__item">{{this.bricks_saved}}</li>
+                    <li class="table__body__row__item">{{this.sand_saved}}</li>
+                    <li class="table__body__row__item">{{this.cement_saved}}</li>
+                    <li class="table__body__row__item flex" style="cursor: pointer; justify-content: flex-end;">
+                        <span {{click "Opening.removeOpening('<<this.id>>')"}}>remove</span>
+                    </li>
+                </ul>
+            {{/each}}
+        </div>
+    </div>
+
+    <button class="btn btn--primary margin--top-2" {{click "Util.openModal('new-opening')"}}>Create opening</button>
+
+    {{component 'modal/new-opening'}}
 </div>

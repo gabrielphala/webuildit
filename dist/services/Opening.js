@@ -3,9 +3,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const Plan_1 = __importDefault(require("../models/Plan"));
+const Opening_1 = __importDefault(require("../models/Opening"));
 const Validation_1 = __importDefault(require("../helpers/Validation"));
-const String_1 = require("../helpers/String");
 class PlanServices {
     static calculateMaterialUsage(length_area, height_area) {
         let wall_volume = length_area * height_area * 0.2;
@@ -17,30 +16,28 @@ class PlanServices {
         const sand = (mortar * (6 / 7)) * 35;
         return { bricks, cement, sand };
     }
-    static async add(wrapRes, body, { userInfo }) {
+    static async add(wrapRes, body) {
         try {
-            const { name, plan_for, length_area, height_area } = body;
+            const { kind, plan_id, length_area, height_area } = body;
             Validation_1.default.validate({
-                'Plan name': { value: name, min: 2, max: 50 },
-                'Plan for': { value: plan_for, min: 2, max: 50 },
                 'Area length': { value: length_area, max: 11 },
                 'Area height': { value: height_area, max: 11 }
             });
+            if (kind == 'select')
+                throw 'Please select opening kind';
             if (isNaN(length_area) || !isNaN(length_area) && parseInt(length_area) <= 0)
                 throw 'Area length must be a valid number';
             if (isNaN(height_area) || !isNaN(height_area) && parseInt(height_area) <= 0)
                 throw 'Area height must be a valid number';
             const { bricks, cement, sand } = PlanServices.calculateMaterialUsage(length_area, height_area);
-            Plan_1.default.insert({
-                plan_no: (0, String_1.makeId)(5),
-                name,
-                user_id: userInfo.id,
-                plan_for,
+            Opening_1.default.insert({
+                kind,
+                plan_id,
                 length_area,
                 height_area,
-                brick_count: bricks,
-                cement,
-                sand
+                bricks_saved: bricks,
+                cement_saved: cement,
+                sand_saved: sand
             });
             wrapRes.successful = true;
             return wrapRes;
@@ -49,10 +46,10 @@ class PlanServices {
             throw e;
         }
     }
-    static async getUserPlans(wrapRes, body, { userInfo }) {
+    static async getOpeningsByPlanId(wrapRes, body, req) {
         try {
-            wrapRes.plans = await Plan_1.default.find({
-                condition: { user_id: userInfo.id, is_removed: false }
+            wrapRes.openings = await Opening_1.default.find({
+                condition: { plan_id: req.params.planId, is_removed: false }
             });
             return wrapRes;
         }
@@ -60,20 +57,9 @@ class PlanServices {
             throw e;
         }
     }
-    static async getPlanByUniqueId(wrapRes, body, req) {
+    static async removeOpening(wrapRes, body, _) {
         try {
-            wrapRes.details = (await Plan_1.default.findOne({
-                condition: { plan_no: req.params.planNo, is_removed: false }
-            })).toObject();
-            return wrapRes;
-        }
-        catch (e) {
-            throw e;
-        }
-    }
-    static async removePlan(wrapRes, body, _) {
-        try {
-            await Plan_1.default.update({ id: body.id }, {
+            await Opening_1.default.update({ id: body.id }, {
                 is_removed: true
             });
             return wrapRes;
@@ -85,4 +71,4 @@ class PlanServices {
 }
 exports.default = PlanServices;
 ;
-//# sourceMappingURL=Plan.js.map
+//# sourceMappingURL=Opening.js.map

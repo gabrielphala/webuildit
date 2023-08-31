@@ -317,8 +317,7 @@ li {
   overflow: hidden;
 }
 .main-header__logo img {
-  width: 19rem;
-  margin-left: -2.9rem;
+  width: 12rem;
 }
 .navbar {
   padding: 8rem 4rem 2rem;
@@ -341,8 +340,7 @@ li {
 }
 .auth__main__illustration__header img {
   width: 15rem;
-  margin-top: -6rem;
-  margin-left: -2rem;
+  margin-bottom: 5rem;
 }
 .auth__main__illustration__body img {
   width: 30rem;
