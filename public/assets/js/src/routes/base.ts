@@ -10,7 +10,7 @@ export default (): void => {
     Route({
         name: 'search',
         url: '/search',
-        layoutpath: 'base'
+        layoutpath: 'info'
     })
 
     Route({

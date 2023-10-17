@@ -57,6 +57,25 @@ class PlanServices {
             throw e;
         }
     }
+    static async search(wrapRes, body) {
+        try {
+            const { plan_id, query } = body;
+            wrapRes.openings = await Opening_1.default.search({
+                condition: [
+                    { plan_id, kind: query, is_removed: false },
+                    { plan_id, length_area: query, is_removed: false },
+                    { plan_id, height_area: query, is_removed: false },
+                    { plan_id, bricks_saved: query, is_removed: false },
+                    { plan_id, cement_saved: query, is_removed: false },
+                    { plan_id, sand_saved: query, is_removed: false }
+                ]
+            });
+            return wrapRes;
+        }
+        catch (e) {
+            throw e;
+        }
+    }
     static async removeOpening(wrapRes, body, _) {
         try {
             await Opening_1.default.update({ id: body.id }, {

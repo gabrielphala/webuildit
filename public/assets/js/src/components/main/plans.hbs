@@ -1,11 +1,18 @@
 {{~ scope 'plans' }}
 {{~ fetch '/plans/get/by/user' | as 'plans'}}
 
-<div class="container__padded" style="width: 67%;">
+<div class="container__padded" style="width: 70%;">
     <div class="container__title">
         <h1>Plans</h1>
         <p>Keep track of your plans</p>
         <div class="container__title__hr"></div>
+    </div>
+
+    <div class="search-download flex flex--j-space-between flex--a-center" style="margin-bottom: 2rem;">
+        <div class="input" style="flex: 0 0 50rem;">
+            <input type="text" id="search-query" placeholder="Search by plan no, name, for, length... etc" {{keyup "Plan.searchUserPlans()"}}>
+        </div>
+        <p>Get CSV Report</p>
     </div>
 
     <div class="card table">
@@ -22,7 +29,7 @@
                 <li class="table__header__row__item">...</li>
             </ul>
         </div>
-        <div class="table__body">
+        <div class="table__body" id="plans">
             {{#each plans.plans}}
                 <ul class="table__body__row flex">
                     <li class="table__body__row__item">{{this.plan_no}}</li>
@@ -34,8 +41,9 @@
                     <li class="table__body__row__item">{{this.sand}}</li>
                     <li class="table__body__row__item">{{this.cement}}</li>
                     <li class="table__body__row__item flex" style="cursor: pointer; justify-content: flex-end;">
-                        <a href="/plan/view?pn={{this.plan_no}}" class="margin--right-1" {{click "Util.nav(event)"}}>view</a>
-                        <span {{click "Plan.removePlan('<<this.id>>')"}}>remove</span>
+                        <a href="/plan/view?pn={{this.plan_no}}" style="margin-right: .5rem;" {{click "Util.nav(event)"}}>view</a>
+                        <span style="margin-right: .5rem;" {{click "Plan.prepareEdit('<<this.id>>')"}}>edit</span>
+                        <span {{click "Plan.removePlan('<<this.id>>')" }}>remove</span>
                     </li>
                 </ul>
             {{/each}}
@@ -45,4 +53,5 @@
     <button class="btn btn--primary margin--top-2" {{click "Util.openModal('new-plan')"}}>Create plan</button>
 
     {{component 'modal/new-plan'}}
+    {{component 'modal/edit-plan'}}
 </div>

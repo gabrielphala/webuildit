@@ -1,0 +1,41 @@
+<div class="modal modal--closed flex--a-start flex--j-center" id="edit-plan-modal">
+    <form class="modal__main card" {{submit "Plan.edit(event)"}}>
+        <div class="card__header flex flex--a-center flex--j-space-between">
+            <div>
+                <h1>Edit plan.</h1>
+                <p>Modify existing plan</p>
+            </div>
+            <svg class="image--icon" {{click "Util.closeModal('edit-plan')"}}>
+                <use href="#cross"></use>
+            </svg>
+        </div>
+        <div class="card__body">
+            <div class="error-container hide" id="edit-plan-error">
+                <p></p>
+            </div>
+
+            <input type="text" id="edit-plan-id" hidden>
+
+            <div class="twin-inputs flex flex--j-space-between">
+                <div class="input">
+                    <input type="text" id="edit-plan-name" placeholder="Plan name">
+                </div>
+                <div class="input">
+                    <input type="text" id="edit-plan-for" placeholder="Plan for">
+                </div>
+            </div>
+            <div class="twin-inputs flex flex--j-space-between margin--top-1">
+                <div class="input">
+                    <input type="text" id="edit-area-length" placeholder="Area length (in meters)">
+                </div>
+                <div class="input">
+                    <input type="text" id="edit-area-height" placeholder="Area height (in meters)">
+                </div>
+            </div>
+        </div>
+        <div class="card__footer">
+            <button class="btn btn--primary">Modify plan</button>
+            <button type="button" class="btn" {{click "Util.closeModal('edit-plan')"}}>Cancel</button>
+        </div>
+    </form>
+</div>

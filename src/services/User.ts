@@ -47,10 +47,10 @@ export default class UserServices {
 
             let userDetails = await User.getByEmail(body.email);
 
-            if (!userDetails) throw 'Email address or Username or Password is incorrect';
+            if (!userDetails) throw 'Account does not exist';
 
             if (!hasher.isSame(userDetails.password, body.password))
-                throw 'Email address or Username or Password is incorrect';
+                throw 'Password is incorrect';
 
             delete userDetails.password;
 

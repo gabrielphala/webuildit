@@ -62,6 +62,25 @@ export default class PlanServices {
         } catch (e) { throw e; }
     }
 
+    static async search (wrapRes: IResponse, body: IAny): Promise<IResponse> {
+        try {
+            const { plan_id, query } = body;
+
+            wrapRes.openings = await Opening.search({
+                condition: [
+                    { plan_id, kind: query, is_removed: false },
+                    { plan_id, length_area: query, is_removed: false },
+                    { plan_id, height_area: query, is_removed: false },
+                    { plan_id, bricks_saved: query, is_removed: false },
+                    { plan_id, cement_saved: query, is_removed: false },
+                    { plan_id, sand_saved: query, is_removed: false }
+                ]
+            })
+
+            return wrapRes;
+        } catch (e) { throw e; }
+    }
+
     static async removeOpening (wrapRes: IResponse, body: IAny, _: IAny): Promise<IResponse> {
         try {
             await Opening.update({ id: body.id }, {

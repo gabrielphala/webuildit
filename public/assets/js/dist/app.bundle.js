@@ -254,7 +254,17 @@ class KoliEngine {
             }
             lastValue = value;
         }
-        let renderedContent = '';
+        let renderedContent = '', elseBody = '';
+        const hasElse = Utility_1.default.blockHasElse(block);
+        console.log(hasElse, block);
+        if (hasElse) {
+            const ifArray = sameBody.split('{{else}}');
+            if (ifArray.length > 2)
+                throw 'If block has more than two else statements';
+            [sameBody, elseBody] = ifArray;
+            if (!same)
+                renderedContent += await this.subRender(elseBody, this._data);
+        }
         if (same)
             renderedContent += await this.subRender(sameBody, this._data);
         this.replaceContent(block, renderedContent);
@@ -392,7 +402,8 @@ class KoliHelpers {
         concat: this.concat,
         signal: this.signal,
         datetime: this.datetime,
-        readheader: this.readheader
+        readheader: this.readheader,
+        minus: this.minus
     };
     _userDefinedHelpers = [];
     _terminatorHelpers = [];
@@ -486,6 +497,15 @@ class KoliHelpers {
             res.push(arg.value);
         });
         return res.join(' ');
+    }
+    minus(...args) {
+        if (args.length < 2)
+            return;
+        let total = args[0].value;
+        for (let i = 1; i < args.length; i++) {
+            total -= args[i].value;
+        }
+        return total;
     }
     arraylen(...args) {
         const value = Array.isArray(args[0].value) ? args[0].value : [];
@@ -1206,6 +1226,13 @@ const initHelpers = () => {
     });
     Environment_1.default.kolijs.setHelper('linkActive', function (str) {
         return `data-linkactive="${str}"`;
+    });
+    Environment_1.default.kolijs.setHelper('cutstr', function (str, length, offset) {
+        length = parseInt(length);
+        let offsetLength = offset && offset.length < 40 ? 40 - offset.length : 0;
+        if (str.length <= offsetLength + length)
+            return str;
+        return `${str.slice(0, length + offsetLength + 1)}...`;
     });
     EventTypes_1.default.forEach(eventType => {
         Environment_1.default.kolijs.setHelper(eventType, function (...fns) {
@@ -2899,6 +2926,31 @@ exports["default"] = () => new (class Opening {
         }
         (0, error_container_1.showError)('opening', response.error);
     }
+    async search(plan_id) {
+        const response = await (0, fetch_1.default)('/openings/search', {
+            body: {
+                plan_id,
+                query: $('#opening-query').val()
+            }
+        });
+        let formated = '';
+        response.openings.forEach(opening => {
+            formated += `
+                <ul class="table__body__row flex">
+                    <li class="table__body__row__item">${opening.kind}</li>
+                    <li class="table__body__row__item">${opening.length_area}</li>
+                    <li class="table__body__row__item">${opening.height_area}</li>
+                    <li class="table__body__row__item">${opening.bricks_saved}</li>
+                    <li class="table__body__row__item">${opening.sand_saved}</li>
+                    <li class="table__body__row__item">${opening.cement_saved}</li>
+                    <li class="table__body__row__item flex" style="cursor: pointer; justify-content: flex-end;">
+                        <span onclick="Opening_removeOpening('${opening.id}')">remove</span>
+                    </li>
+                </ul>
+            `;
+        });
+        $('#openings').html(formated);
+    }
     async removeOpening(id) {
         const response = await (0, fetch_1.default)('/opening/remove', {
             body: {
@@ -2947,6 +2999,38 @@ exports["default"] = () => new (class Plan {
         }
         (0, error_container_1.showError)('plan', response.error);
     }
+    async edit(e) {
+        e.preventDefault();
+        const response = await (0, fetch_1.default)('/plan/edit', {
+            body: {
+                plan_id: $('#edit-plan-id').val(),
+                name: $('#edit-plan-name').val(),
+                plan_for: $('#edit-plan-for').val(),
+                length_area: $('#edit-area-length').val(),
+                height_area: $('#edit-area-height').val()
+            }
+        });
+        if (response.successful) {
+            (0, modal_1.closeModal)('edit-plan');
+            return (0, oddlyjs_1.Refresh)();
+        }
+        (0, error_container_1.showError)('plan', response.error);
+    }
+    async prepareEdit(plan_id) {
+        $('#edit-plan-id').val(plan_id);
+        const res = await (0, fetch_1.default)('/plan/get/by/id', {
+            body: {
+                plan_id
+            }
+        });
+        if (res.successful) {
+            $('#edit-plan-name').val(res.details.name);
+            $('#edit-plan-for').val(res.details.plan_for);
+            $('#edit-area-length').val(res.details.length_area);
+            $('#edit-area-height').val(res.details.height_area);
+        }
+        (0, modal_1.openModal)('edit-plan');
+    }
     async removePlan(id) {
         const response = await (0, fetch_1.default)('/plan/remove', {
             body: {
@@ -2954,6 +3038,33 @@ exports["default"] = () => new (class Plan {
             }
         });
         (0, oddlyjs_1.Refresh)();
+    }
+    async searchUserPlans() {
+        const response = await (0, fetch_1.default)('/plans/search', {
+            body: {
+                query: $('#search-query').val()
+            }
+        });
+        let formated = '';
+        response.plans.forEach(plan => {
+            formated += `
+                <ul class="table__body__row flex">
+                    <li class="table__body__row__item">${plan.plan_no}</li>
+                    <li class="table__body__row__item">${plan.name}</li>
+                    <li class="table__body__row__item">${plan.plan_for}</li>
+                    <li class="table__body__row__item">${plan.length_area}</li>
+                    <li class="table__body__row__item">${plan.height_area}</li>
+                    <li class="table__body__row__item">${plan.brick_count}</li>
+                    <li class="table__body__row__item">${plan.sand}</li>
+                    <li class="table__body__row__item">${plan.cement}</li>
+                    <li class="table__body__row__item flex" style="cursor: pointer; justify-content: flex-end;">
+                        <a href="/plan/view?pn=${plan.plan_no}" class="margin--right-1" onclick="Util_nav(event)">view</a>
+                        <span onclick="Plan_removePlan('${plan.id}')">remove</span>
+                    </li>
+                </ul>
+            `;
+        });
+        $('#plans').html(formated);
     }
 });
 
@@ -3221,7 +3332,7 @@ exports["default"] = () => {
     (0, oddlyjs_1.Route)({
         name: 'search',
         url: '/search',
-        layoutpath: 'base'
+        layoutpath: 'info'
     });
     (0, oddlyjs_1.Route)({
         name: 'plans',

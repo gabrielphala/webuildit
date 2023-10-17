@@ -9,6 +9,13 @@
         <div class="container__title__hr"></div>
     </div>
 
+    <div class="search-download flex flex--j-space-between flex--a-center" style="margin-bottom: 2rem;">
+        <div class="input" style="flex: 0 0 50rem;">
+            <input type="text" id="opening-query" placeholder="Search by kind, length... etc" {{keyup "Opening.search('<<plan.details.id>>')"}}>
+        </div>
+        <p>Get CSV Report</p>
+    </div>
+
     <div class="card table">
         <div class="table__header">
             <ul class="table__header__row flex">
@@ -21,7 +28,7 @@
                 <li class="table__header__row__item">...</li>
             </ul>
         </div>
-        <div class="table__body">
+        <div class="table__body" id="openings">
             {{#each openings.openings}}
                 <ul class="table__body__row flex">
                     <li class="table__body__row__item">{{this.kind}}</li>

@@ -9,5 +9,6 @@ exports.default = (app) => {
     app.post('/opening/add', base_1.default.wrap_with_store(Opening_1.default.add));
     app.post('/opening/remove', base_1.default.wrap_with_store(Opening_1.default.removeOpening));
     app.post('/openings/get/by/plan-id/:planId', base_1.default.wrap_with_request(Opening_1.default.getOpeningsByPlanId));
+    app.post('/openings/search', base_1.default.wrap(Opening_1.default.search));
 };
 //# sourceMappingURL=opening.js.map

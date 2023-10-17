@@ -30,6 +30,35 @@ export default () => new (class Opening {
         showError('opening', response.error)
     }
 
+    async search (plan_id) {
+        const response = await fetch('/openings/search', {
+            body: {
+                plan_id,
+                query: $('#opening-query').val()
+            }
+        })
+
+        let formated = '';
+
+        response.openings.forEach(opening => {
+            formated += `
+                <ul class="table__body__row flex">
+                    <li class="table__body__row__item">${opening.kind}</li>
+                    <li class="table__body__row__item">${opening.length_area}</li>
+                    <li class="table__body__row__item">${opening.height_area}</li>
+                    <li class="table__body__row__item">${opening.bricks_saved}</li>
+                    <li class="table__body__row__item">${opening.sand_saved}</li>
+                    <li class="table__body__row__item">${opening.cement_saved}</li>
+                    <li class="table__body__row__item flex" style="cursor: pointer; justify-content: flex-end;">
+                        <span onclick="Opening_removeOpening('${opening.id}')">remove</span>
+                    </li>
+                </ul>
+            `;
+        });
+
+        $('#openings').html(formated)
+    }
+
     async removeOpening (id) {
         const response = await fetch('/opening/remove', {
             body: {
