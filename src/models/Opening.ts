@@ -4,9 +4,9 @@ export default new (class Opening extends SQLifier {
     constructor() {
         super();
 
-        this.schema('opening', {
-            id: { type: 'int', isAutoIncrement: true, isPrimary: true },
-            plan_id: { type: 'int', ref: 'plan' },
+        this.schema('material', {
+            material_id: { type: 'int', isAutoIncrement: true, isPrimary: true },
+            plan_id: { type: 'int', ref: 'plan', refField: 'plan_id' },
             kind: { type: 'varchar', length: 11 },
             length_area: { type: 'int', length: 11 },
             height_area: { type: 'int', length: 11 },

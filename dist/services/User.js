@@ -73,11 +73,11 @@ class UserServices {
             });
             const userExists = await User_1.default.exists({
                 email,
-                id: { $ne: store.userInfo.id }
+                user_id: { $ne: store.userInfo.user_id }
             });
             if (userExists.found)
                 throw 'Email already in use';
-            User_1.default.update({ id: store.userInfo.id }, {
+            User_1.default.update({ user_id: store.userInfo.user_id }, {
                 firstname,
                 lastname,
                 email
@@ -96,7 +96,7 @@ class UserServices {
     }
     static async deleteAccount(wrapRes, body, store) {
         try {
-            User_1.default.update({ id: store.userInfo.id }, { is_removed: true });
+            User_1.default.update({ user_id: store.userInfo.user_id }, { is_removed: true });
             wrapRes.successful = true;
         }
         catch (error) {

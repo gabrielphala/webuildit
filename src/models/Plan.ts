@@ -5,8 +5,8 @@ export default new (class Plan extends SQLifier {
         super();
 
         this.schema('plan', {
-            id: { type: 'int', isAutoIncrement: true, isPrimary: true },
-            user_id: { type: 'int', ref: 'user' },
+            plan_id: { type: 'int', isAutoIncrement: true, isPrimary: true },
+            user_id: { type: 'int', ref: 'user', refField: 'user_id' },
             name: { type: 'varchar', length: 50 },
             plan_for: { type: 'varchar', length: 30 },
             plan_no: { type: 'varchar', length: 8 },

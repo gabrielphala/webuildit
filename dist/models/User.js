@@ -5,7 +5,7 @@ exports.default = new (class User extends sqlifier_1.SQLifier {
     constructor() {
         super();
         this.schema('user', {
-            id: { type: 'int', isAutoIncrement: true, isPrimary: true },
+            user_id: { type: 'int', isAutoIncrement: true, isPrimary: true },
             firstname: { type: 'varchar', length: 55 },
             lastname: { type: 'varchar', length: 55 },
             email: { type: 'varchar', length: 50 },

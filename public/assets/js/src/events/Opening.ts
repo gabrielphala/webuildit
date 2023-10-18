@@ -50,7 +50,7 @@ export default () => new (class Opening {
                     <li class="table__body__row__item">${opening.sand_saved}</li>
                     <li class="table__body__row__item">${opening.cement_saved}</li>
                     <li class="table__body__row__item flex" style="cursor: pointer; justify-content: flex-end;">
-                        <span onclick="Opening_removeOpening('${opening.id}')">remove</span>
+                        <span onclick="Opening_removeOpening('${opening.material_id}')">remove</span>
                     </li>
                 </ul>
             `;

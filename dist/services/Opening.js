@@ -78,7 +78,7 @@ class PlanServices {
     }
     static async removeOpening(wrapRes, body, _) {
         try {
-            await Opening_1.default.update({ id: body.id }, {
+            await Opening_1.default.update({ material_id: body.id }, {
                 is_removed: true
             });
             return wrapRes;

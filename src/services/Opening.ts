@@ -83,7 +83,7 @@ export default class PlanServices {
 
     static async removeOpening (wrapRes: IResponse, body: IAny, _: IAny): Promise<IResponse> {
         try {
-            await Opening.update({ id: body.id }, {
+            await Opening.update({ material_id: body.id }, {
                 is_removed: true
             })
 

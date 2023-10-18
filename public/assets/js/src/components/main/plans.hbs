@@ -42,8 +42,8 @@
                     <li class="table__body__row__item">{{this.cement}}</li>
                     <li class="table__body__row__item flex" style="cursor: pointer; justify-content: flex-end;">
                         <a href="/plan/view?pn={{this.plan_no}}" style="margin-right: .5rem;" {{click "Util.nav(event)"}}>view</a>
-                        <span style="margin-right: .5rem;" {{click "Plan.prepareEdit('<<this.id>>')"}}>edit</span>
-                        <span {{click "Plan.removePlan('<<this.id>>')" }}>remove</span>
+                        <span style="margin-right: .5rem;" {{click "Plan.prepareEdit('<<this.plan_id>>')"}}>edit</span>
+                        <span {{click "Plan.removePlan('<<this.plan_id>>')" }}>remove</span>
                     </li>
                 </ul>
             {{/each}}

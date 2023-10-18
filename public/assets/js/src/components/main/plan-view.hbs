@@ -1,6 +1,6 @@
 {{~ scope 'plan.view' }}
 {{~ fetch '/plan/get/by/unique-id/' + query.pn | as 'plan'}}
-{{~ fetch '/openings/get/by/plan-id/' + plan.details.id | as 'openings'}}
+{{~ fetch '/openings/get/by/plan-id/' + plan.details.plan_id | as 'openings'}}
 
 <div class="container__padded" style="width: 67%;">
     <div class="container__title">
@@ -11,7 +11,7 @@
 
     <div class="search-download flex flex--j-space-between flex--a-center" style="margin-bottom: 2rem;">
         <div class="input" style="flex: 0 0 50rem;">
-            <input type="text" id="opening-query" placeholder="Search by kind, length... etc" {{keyup "Opening.search('<<plan.details.id>>')"}}>
+            <input type="text" id="opening-query" placeholder="Search by kind, length... etc" {{keyup "Opening.search('<<plan.details.plan_id>>')"}}>
         </div>
         <p>Get CSV Report</p>
     </div>
@@ -38,14 +38,14 @@
                     <li class="table__body__row__item">{{this.sand_saved}}</li>
                     <li class="table__body__row__item">{{this.cement_saved}}</li>
                     <li class="table__body__row__item flex" style="cursor: pointer; justify-content: flex-end;">
-                        <span {{click "Opening.removeOpening('<<this.id>>')"}}>remove</span>
+                        <span {{click "Opening.removeOpening('<<this.material_id>>')"}}>remove</span>
                     </li>
                 </ul>
             {{/each}}
         </div>
     </div>
 
-    <button class="btn btn--primary margin--top-2" {{click "Util.openModal('new-opening')"}}>Create opening</button>
+    <button class="btn btn--primary margin--top-2" {{click "Util.openModal('new-opening')"}}>Add material</button>
 
     {{component 'modal/new-opening'}}
 </div>

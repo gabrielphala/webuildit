@@ -83,12 +83,12 @@ export default class UserServices {
 
             const userExists = await User.exists({
                 email,
-                id: { $ne: store.userInfo.id }
+                user_id: { $ne: store.userInfo.user_id }
             })
 
             if (userExists.found) throw 'Email already in use';
 
-            User.update({ id: store.userInfo.id }, {
+            User.update({ user_id: store.userInfo.user_id }, {
                 firstname,
                 lastname,
                 email
@@ -110,7 +110,7 @@ export default class UserServices {
 
     static async deleteAccount (wrapRes: IResponse, body: IAny, store: IAny): Promise<IResponse> {
         try {
-            User.update({ id: store.userInfo.id }, { is_removed: true })
+            User.update({ user_id: store.userInfo.user_id }, { is_removed: true })
 
             wrapRes.successful = true;
         } catch (error) { throw error; }

@@ -40,7 +40,7 @@ export default class PlanServices {
             Plan.insert({
                 plan_no: makeId(5),
                 name,
-                user_id: userInfo.id,
+                user_id: userInfo.user_id,
                 plan_for,
                 length_area,
                 height_area,
@@ -72,7 +72,7 @@ export default class PlanServices {
             const { bricks, cement, sand } = PlanServices.calculateMaterialUsage(length_area, height_area)
 
             Plan.update(
-                { id: plan_id },
+                { plan_id: plan_id },
                 {
                     name,
                     plan_for,
@@ -93,7 +93,7 @@ export default class PlanServices {
     static async getUserPlans (wrapRes: IResponse, body: IAny, { userInfo }: IAny): Promise<IResponse> {
         try {
             wrapRes.plans = await Plan.find({
-                condition: { user_id: userInfo.id, is_removed: false }
+                condition: { user_id: userInfo.user_id, is_removed: false }
             });
 
             return wrapRes;
@@ -107,15 +107,15 @@ export default class PlanServices {
 
             wrapRes.plans = await Plan.search({
                 condition: [
-                    { user_id: userInfo.id, name: query, is_removed: false },
-                    { user_id: userInfo.id, plan_for: query, is_removed: false },
-                    { user_id: userInfo.id, plan_no: query, is_removed: false },
-                    { user_id: userInfo.id, length_area: query, is_removed: false },
-                    { user_id: userInfo.id, height_area: query, is_removed: false },
-                    { user_id: userInfo.id, brick_count: query, is_removed: false },
-                    { user_id: userInfo.id, cement: query, is_removed: false },
-                    { user_id: userInfo.id, sand: query, is_removed: false },
-                    { user_id: userInfo.id, window_count: query, is_removed: false },
+                    { user_id: userInfo.user_id, name: query, is_removed: false },
+                    { user_id: userInfo.user_id, plan_for: query, is_removed: false },
+                    { user_id: userInfo.user_id, plan_no: query, is_removed: false },
+                    { user_id: userInfo.user_id, length_area: query, is_removed: false },
+                    { user_id: userInfo.user_id, height_area: query, is_removed: false },
+                    { user_id: userInfo.user_id, brick_count: query, is_removed: false },
+                    { user_id: userInfo.user_id, cement: query, is_removed: false },
+                    { user_id: userInfo.user_id, sand: query, is_removed: false },
+                    { user_id: userInfo.user_id, window_count: query, is_removed: false },
                 ]
             });
 
@@ -136,7 +136,7 @@ export default class PlanServices {
     static async getPlanById (wrapRes: IResponse, body: IAny): Promise<IResponse> {
         try {
             wrapRes.details = (await Plan.findOne({
-                condition: { id: body.plan_id, is_removed: false }
+                condition: { plan_id: body.plan_id, is_removed: false }
             })).toObject();
 
             wrapRes.successful = true;
@@ -147,7 +147,7 @@ export default class PlanServices {
 
     static async removePlan (wrapRes: IResponse, body: IAny, _: IAny): Promise<IResponse> {
         try {
-            await Plan.update({ id: body.id }, {
+            await Plan.update({ plan_id: body.id }, {
                 is_removed: true
             })
 

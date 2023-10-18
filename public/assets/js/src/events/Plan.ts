@@ -103,7 +103,8 @@ export default () => new (class Plan {
                     <li class="table__body__row__item">${plan.cement}</li>
                     <li class="table__body__row__item flex" style="cursor: pointer; justify-content: flex-end;">
                         <a href="/plan/view?pn=${plan.plan_no}" class="margin--right-1" onclick="Util_nav(event)">view</a>
-                        <span onclick="Plan_removePlan('${plan.id}')">remove</span>
+                        <span style="margin-right: .5rem;" onclick="Plan_prepareEdit('${plan.plan_id}')">edit</span>
+                        <span onclick="Plan_removePlan('${plan.plan_id}')">remove</span>
                     </li>
                 </ul>
             `;

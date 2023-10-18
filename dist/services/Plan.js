@@ -34,7 +34,7 @@ class PlanServices {
             Plan_1.default.insert({
                 plan_no: (0, String_1.makeId)(5),
                 name,
-                user_id: userInfo.id,
+                user_id: userInfo.user_id,
                 plan_for,
                 length_area,
                 height_area,
@@ -63,7 +63,7 @@ class PlanServices {
             if (isNaN(height_area) || !isNaN(height_area) && parseInt(height_area) <= 0)
                 throw 'Area height must be a valid number';
             const { bricks, cement, sand } = PlanServices.calculateMaterialUsage(length_area, height_area);
-            Plan_1.default.update({ id: plan_id }, {
+            Plan_1.default.update({ plan_id: plan_id }, {
                 name,
                 plan_for,
                 length_area,
@@ -82,7 +82,7 @@ class PlanServices {
     static async getUserPlans(wrapRes, body, { userInfo }) {
         try {
             wrapRes.plans = await Plan_1.default.find({
-                condition: { user_id: userInfo.id, is_removed: false }
+                condition: { user_id: userInfo.user_id, is_removed: false }
             });
             return wrapRes;
         }
@@ -95,15 +95,15 @@ class PlanServices {
             const { query } = body;
             wrapRes.plans = await Plan_1.default.search({
                 condition: [
-                    { user_id: userInfo.id, name: query, is_removed: false },
-                    { user_id: userInfo.id, plan_for: query, is_removed: false },
-                    { user_id: userInfo.id, plan_no: query, is_removed: false },
-                    { user_id: userInfo.id, length_area: query, is_removed: false },
-                    { user_id: userInfo.id, height_area: query, is_removed: false },
-                    { user_id: userInfo.id, brick_count: query, is_removed: false },
-                    { user_id: userInfo.id, cement: query, is_removed: false },
-                    { user_id: userInfo.id, sand: query, is_removed: false },
-                    { user_id: userInfo.id, window_count: query, is_removed: false },
+                    { user_id: userInfo.user_id, name: query, is_removed: false },
+                    { user_id: userInfo.user_id, plan_for: query, is_removed: false },
+                    { user_id: userInfo.user_id, plan_no: query, is_removed: false },
+                    { user_id: userInfo.user_id, length_area: query, is_removed: false },
+                    { user_id: userInfo.user_id, height_area: query, is_removed: false },
+                    { user_id: userInfo.user_id, brick_count: query, is_removed: false },
+                    { user_id: userInfo.user_id, cement: query, is_removed: false },
+                    { user_id: userInfo.user_id, sand: query, is_removed: false },
+                    { user_id: userInfo.user_id, window_count: query, is_removed: false },
                 ]
             });
             return wrapRes;
@@ -126,7 +126,7 @@ class PlanServices {
     static async getPlanById(wrapRes, body) {
         try {
             wrapRes.details = (await Plan_1.default.findOne({
-                condition: { id: body.plan_id, is_removed: false }
+                condition: { plan_id: body.plan_id, is_removed: false }
             })).toObject();
             wrapRes.successful = true;
             return wrapRes;
@@ -137,7 +137,7 @@ class PlanServices {
     }
     static async removePlan(wrapRes, body, _) {
         try {
-            await Plan_1.default.update({ id: body.id }, {
+            await Plan_1.default.update({ plan_id: body.id }, {
                 is_removed: true
             });
             return wrapRes;
