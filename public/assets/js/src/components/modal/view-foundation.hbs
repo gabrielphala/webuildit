@@ -1,0 +1,26 @@
+{{~ fetch '/foundation/get/by/plan/unique-id/' + query.pn | as 'foundation'}}
+
+<div class="modal modal--closed flex--a-start flex--j-center" id="view-foundation-modal">
+    <form class="modal__main card">
+        <div class="card__header flex flex--a-center flex--j-space-between">
+            <div>
+                <h1>Foundation</h1>
+                <p>Foundation details</p>
+            </div>
+            <svg class="image--icon" {{click "Util.closeModal('view-foundation')"}}>
+                <use href="#cross"></use>
+            </svg>
+        </div>
+        <div class="card__body">
+            <p>wall height: {{ foundation.details.wall_height }}</p>
+            <p>wall length: {{ foundation.details.wall_length }}</p>
+            <p>Floor area: {{ foundation.details.floor_area }}</p>
+            <p>Cement used (bags): {{ foundation.details.cement }}</p>
+            <p>Sand used (KGs): {{ foundation.details.sand }}</p>
+            <p>Bricks used: {{ foundation.details.brick_count }}</p>
+        </div>
+        <div class="card__footer">
+            <button type="button" class="btn" {{click "Util.closeModal('view-foundation')"}}>Cancel</button>
+        </div>
+    </form>
+</div>

@@ -4,6 +4,17 @@ import v from "../helpers/Validation"
 
 import { IAny, IResponse } from "../interfaces";
 
+const openings = {
+    door: {
+        'single leaf': [0.9, 2.1],
+        '2 pane sliding door': [1.3, 2.1],
+        '4 pane sliding door': [2.4, 2.1],
+        'double leaf': [1.8, 2.1],
+        'single garage door': [2.44, 2.13],
+        'double garage door': [4.88, 2.13],
+    }
+}
+
 export default class PlanServices {
     static calculateMaterialUsage (length_area, height_area) {
         let wall_volume = length_area * height_area * 0.2;
@@ -22,28 +33,28 @@ export default class PlanServices {
 
     static async add (wrapRes: IResponse, body: IAny): Promise<IResponse> {
         try {
-            const { kind, plan_id, length_area, height_area } = body;
+            const { kind, plan_id, opening, quantity } = body;
 
-            v.validate({
-                'Area length': { value: length_area, max: 11 },
-                'Area height': { value: height_area, max: 11 }
-            });
+            const [length_area, height_area] = openings[kind][opening];
 
             if (kind == 'select') throw 'Please select opening kind';
 
-            if (isNaN(length_area) || !isNaN(length_area) && parseInt(length_area) <= 0) throw 'Area length must be a valid number';
-            if (isNaN(height_area) || !isNaN(height_area) && parseInt(height_area) <= 0) throw 'Area height must be a valid number';
+            if (opening == 'select') throw 'Please select opening';
+
+            if (!(parseFloat(quantity) > 0)) throw 'Quantity should be a valid number';
 
             const { bricks, cement, sand } = PlanServices.calculateMaterialUsage(length_area, height_area)
 
-            Opening.insert({
+            await Opening.insert({
                 kind,
+                name: opening,
                 plan_id,
-                length_area,
-                height_area,
-                bricks_saved: bricks,
-                cement_saved: cement,
-                sand_saved: sand
+                quantity,
+                length_area: length_area * quantity,
+                height_area: height_area * quantity,
+                bricks_saved: bricks * quantity,
+                cement_saved: Math.ceil((cement * quantity)),
+                sand_saved: sand * quantity
             });
 
             wrapRes.successful = true;
@@ -65,6 +76,8 @@ export default class PlanServices {
     static async search (wrapRes: IResponse, body: IAny): Promise<IResponse> {
         try {
             const { plan_id, query } = body;
+
+            if (/^[0-9a-z\s-_]+$/.test(query)) throw 'Search term should have letters, numbers, -, space, or underscore';
 
             wrapRes.openings = await Opening.search({
                 condition: [

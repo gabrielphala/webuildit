@@ -1,0 +1,38 @@
+{{~ fetch '/plan/get/by/unique-id/' + query.pn | as 'plan'}}
+
+<div class="modal modal--closed flex--a-start flex--j-center" id="new-foundation-modal">
+    <form class="modal__main card" {{submit "Foundation.add(event)"}}>
+        <div class="card__header flex flex--a-center flex--j-space-between">
+            <div>
+                <h1>Foundation</h1>
+                <p>Add foundation</p>
+            </div>
+            <svg class="image--icon" {{click "Util.closeModal('new-foundation')"}}>
+                <use href="#cross"></use>
+            </svg>
+        </div>
+        <div class="card__body">
+            <div class="error-container hide" id="foundation-error">
+                <p></p>
+            </div>
+
+            <input id="w-plan-id" value="{{ plan.details.plan_id }}" hidden>
+
+			<div class="input">
+				<input type="text" id="floor-area" placeholder="Floor area">
+			</div>
+            <div class="twin-inputs flex flex--j-space-between margin--top-1">
+                <div class="input">
+                    <input type="text" id="length" placeholder="Foundation wall length (in meters)">
+                </div>
+                <div class="input">
+                    <input type="text" id="height" placeholder="Foundation wall height (in meters)">
+                </div>
+            </div>
+        </div>
+        <div class="card__footer">
+            <button class="btn btn--primary">Create foundation</button>
+            <button type="button" class="btn" {{click "Util.closeModal('new-foundation')"}}>Cancel</button>
+        </div>
+    </form>
+</div>

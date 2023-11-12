@@ -4,6 +4,14 @@ import { hideError, showError } from "../helpers/error-container";
 import { closeModal, openModal } from "../helpers/modal";
 import fetch from "../helpers/fetch";
 
+let tableHeader = [
+    '#', 'Unique no', 'Plan name', 'For', 'Area length', 'Area height', 'Bricks', 'Sand (kg)', 'Cement (bags)'
+]
+
+let allowedColumns = [
+    'plan_no', 'name', 'plan_for', 'length_area', 'height_area', 'brick_count', 'sand', 'cement'
+]
+
 export default () => new (class Plan {
     constructor () {
         new Events(this)
@@ -111,5 +119,25 @@ export default () => new (class Plan {
         });
 
         $('#plans').html(formated)
+    }
+
+    async downloadCSV (e: PointerEvent) {
+        const plans = (e.currentTarget as HTMLElement).dataset.plans as string;
+
+        const response = await fetch('/download/csv', {
+            body: {
+                data: JSON.parse(plans),
+                tableHeader,
+                allowedColumns
+            }
+        });
+
+        if (response.successful) {
+            const anchor = $('#download-anchor')
+
+            anchor.attr('href', `/assets/downloads/tmp/${response.filename}`)
+
+            anchor[0].click();
+        }
     }
 });

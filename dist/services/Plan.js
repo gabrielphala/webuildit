@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Plan_1 = __importDefault(require("../models/Plan"));
+const Opening_1 = __importDefault(require("../models/Opening"));
 const Validation_1 = __importDefault(require("../helpers/Validation"));
 const String_1 = require("../helpers/String");
 class PlanServices {
@@ -26,10 +27,14 @@ class PlanServices {
                 'Area length': { value: length_area, max: 11 },
                 'Area height': { value: height_area, max: 11 }
             });
-            if (isNaN(length_area) || !isNaN(length_area) && parseInt(length_area) <= 0)
-                throw 'Area length must be a valid number';
-            if (isNaN(height_area) || !isNaN(height_area) && parseInt(height_area) <= 0)
-                throw 'Area height must be a valid number';
+            if (/^[0-9a-z\s-_]+$/.test(name))
+                throw 'Name should have letters, numbers, -, space, or underscore';
+            if (/^[0-9a-z\s-_]+$/.test(plan_for))
+                throw 'Name should have letters, numbers, -, space, or underscore';
+            if (!(parseFloat(length_area) > 0))
+                throw 'Length should be a valid number';
+            if (!(parseFloat(height_area) > 0))
+                throw 'Height should be a valid number';
             const { bricks, cement, sand } = PlanServices.calculateMaterialUsage(length_area, height_area);
             Plan_1.default.insert({
                 plan_no: (0, String_1.makeId)(5),
@@ -39,7 +44,7 @@ class PlanServices {
                 length_area,
                 height_area,
                 brick_count: bricks,
-                cement,
+                cement: Math.round(cement / 50),
                 sand
             });
             wrapRes.successful = true;
@@ -58,10 +63,14 @@ class PlanServices {
                 'Area length': { value: length_area, max: 11 },
                 'Area height': { value: height_area, max: 11 }
             });
-            if (isNaN(length_area) || !isNaN(length_area) && parseInt(length_area) <= 0)
-                throw 'Area length must be a valid number';
-            if (isNaN(height_area) || !isNaN(height_area) && parseInt(height_area) <= 0)
-                throw 'Area height must be a valid number';
+            if (/^[0-9a-z\s-_]+$/.test(name))
+                throw 'Name should have letters, numbers, -, space, or underscore';
+            if (/^[0-9a-z\s-_]+$/.test(plan_for))
+                throw 'Name should have letters, numbers, -, space, or underscore';
+            if (!(parseFloat(length_area) > 0))
+                throw 'Length should be a valid number';
+            if (!(parseFloat(height_area) > 0))
+                throw 'Height should be a valid number';
             const { bricks, cement, sand } = PlanServices.calculateMaterialUsage(length_area, height_area);
             Plan_1.default.update({ plan_id: plan_id }, {
                 name,
@@ -69,7 +78,7 @@ class PlanServices {
                 length_area,
                 height_area,
                 brick_count: bricks,
-                cement,
+                cement: Math.round(cement / 50),
                 sand
             });
             wrapRes.successful = true;
@@ -93,6 +102,8 @@ class PlanServices {
     static async searchUserPlans(wrapRes, body, { userInfo }) {
         try {
             const { query } = body;
+            if (/^[0-9a-z\s-_]+$/.test(query))
+                throw 'Search term should have letters, numbers, -, space, or underscore';
             wrapRes.plans = await Plan_1.default.search({
                 condition: [
                     { user_id: userInfo.user_id, name: query, is_removed: false },
@@ -138,6 +149,9 @@ class PlanServices {
     static async removePlan(wrapRes, body, _) {
         try {
             await Plan_1.default.update({ plan_id: body.id }, {
+                is_removed: true
+            });
+            await Opening_1.default.update({ plan_id: body.id }, {
                 is_removed: true
             });
             return wrapRes;

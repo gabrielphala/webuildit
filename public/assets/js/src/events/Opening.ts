@@ -12,10 +12,16 @@ export default () => new (class Opening {
     async add (e: PointerEvent) {
         e.preventDefault();
 
+        let opening, kind = $('#opening-kind').val();
+
+        if (kind == 'door') opening = $('#door-kind').val();
+
         const response = await fetch('/opening/add', {
             body: {
                 plan_id: $('#plan-id').val(),
-                kind: $('#opening-kind').val(),
+                kind,
+                quantity: $('#quantity').val(),
+                opening,
                 length_area: $('#area-length').val(),
                 height_area: $('#area-height').val()
             }
@@ -28,6 +34,18 @@ export default () => new (class Opening {
         }
 
         showError('opening', response.error)
+    }
+
+    showKind () {
+        const kind = $('#opening-kind').val();
+
+        if (kind == 'select'){
+            $('#door-selection').hide()
+        }
+
+        else if (kind == 'door') {
+            $('#door-selection').show()
+        }
     }
 
     async search (plan_id) {

@@ -24,7 +24,7 @@
                 <li class="table__header__row__item">Area height</li>
                 <li class="table__header__row__item">Bricks saved</li>
                 <li class="table__header__row__item">Sand saved (kg)</li>
-                <li class="table__header__row__item">Cement saved (kg)</li>
+                <li class="table__header__row__item">Cement saved (bags)</li>
                 <li class="table__header__row__item">...</li>
             </ul>
         </div>
@@ -45,7 +45,13 @@
         </div>
     </div>
 
-    <button class="btn btn--primary margin--top-2" {{click "Util.openModal('new-opening')"}}>Add material</button>
+    <div class="flex flex--a-center margin--top-2">
+        <button class="btn btn--primary margin--right-2" {{click "Util.openModal('new-opening')" }}>Add material</button>
+        <button class="btn btn--primary margin--right-2" {{click "Util.openModal('new-foundation')" }}>Add foundation</button>
+        <p {{click "Util.openModal('view-foundation')" }}>View foundation details</p>
+    </div>
 
     {{component 'modal/new-opening'}}
+    {{component 'modal/new-foundation'}}
+    {{component 'modal/view-foundation'}}
 </div>

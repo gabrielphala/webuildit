@@ -256,7 +256,6 @@ class KoliEngine {
         }
         let renderedContent = '', elseBody = '';
         const hasElse = Utility_1.default.blockHasElse(block);
-        console.log(hasElse, block);
         if (hasElse) {
             const ifArray = sameBody.split('{{else}}');
             if (ifArray.length > 2)
@@ -403,7 +402,8 @@ class KoliHelpers {
         signal: this.signal,
         datetime: this.datetime,
         readheader: this.readheader,
-        minus: this.minus
+        minus: this.minus,
+        json: this.json
     };
     _userDefinedHelpers = [];
     _terminatorHelpers = [];
@@ -497,6 +497,9 @@ class KoliHelpers {
             res.push(arg.value);
         });
         return res.join(' ');
+    }
+    json(arg) {
+        return JSON.stringify(arg.value);
     }
     minus(...args) {
         if (args.length < 2)
@@ -2891,6 +2894,46 @@ const middleware_1 = __importDefault(__webpack_require__(/*! ./middleware */ "./
 
 /***/ }),
 
+/***/ "./public/assets/js/src/events/Foundation.ts":
+/*!***************************************************!*\
+  !*** ./public/assets/js/src/events/Foundation.ts ***!
+  \***************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const oddlyjs_1 = __webpack_require__(/*! oddlyjs */ "../oddlyjs/index.ts");
+const error_container_1 = __webpack_require__(/*! ../helpers/error-container */ "./public/assets/js/src/helpers/error-container.ts");
+const modal_1 = __webpack_require__(/*! ../helpers/modal */ "./public/assets/js/src/helpers/modal.ts");
+const fetch_1 = __importDefault(__webpack_require__(/*! ../helpers/fetch */ "./public/assets/js/src/helpers/fetch.ts"));
+exports["default"] = () => new (class Foundation {
+    constructor() {
+        new oddlyjs_1.Events(this);
+    }
+    async add(e) {
+        e.preventDefault();
+        const response = await (0, fetch_1.default)('/foundation/add', {
+            body: {
+                plan_id: $('#w-plan-id').val(),
+                floor_area: $('#floor-area').val(),
+                wall_length: $('#length').val(),
+                wall_height: $('#height').val()
+            }
+        });
+        if (response.successful) {
+            (0, modal_1.closeModal)('new-foundation');
+            return (0, oddlyjs_1.Refresh)();
+        }
+        (0, error_container_1.showError)('opening', response.error);
+    }
+});
+
+
+/***/ }),
+
 /***/ "./public/assets/js/src/events/Opening.ts":
 /*!************************************************!*\
   !*** ./public/assets/js/src/events/Opening.ts ***!
@@ -2912,10 +2955,15 @@ exports["default"] = () => new (class Opening {
     }
     async add(e) {
         e.preventDefault();
+        let opening, kind = $('#opening-kind').val();
+        if (kind == 'door')
+            opening = $('#door-kind').val();
         const response = await (0, fetch_1.default)('/opening/add', {
             body: {
                 plan_id: $('#plan-id').val(),
-                kind: $('#opening-kind').val(),
+                kind,
+                quantity: $('#quantity').val(),
+                opening,
                 length_area: $('#area-length').val(),
                 height_area: $('#area-height').val()
             }
@@ -2925,6 +2973,15 @@ exports["default"] = () => new (class Opening {
             return (0, oddlyjs_1.Refresh)();
         }
         (0, error_container_1.showError)('opening', response.error);
+    }
+    showKind() {
+        const kind = $('#opening-kind').val();
+        if (kind == 'select') {
+            $('#door-selection').hide();
+        }
+        else if (kind == 'door') {
+            $('#door-selection').show();
+        }
     }
     async search(plan_id) {
         const response = await (0, fetch_1.default)('/openings/search', {
@@ -2979,6 +3036,12 @@ const oddlyjs_1 = __webpack_require__(/*! oddlyjs */ "../oddlyjs/index.ts");
 const error_container_1 = __webpack_require__(/*! ../helpers/error-container */ "./public/assets/js/src/helpers/error-container.ts");
 const modal_1 = __webpack_require__(/*! ../helpers/modal */ "./public/assets/js/src/helpers/modal.ts");
 const fetch_1 = __importDefault(__webpack_require__(/*! ../helpers/fetch */ "./public/assets/js/src/helpers/fetch.ts"));
+let tableHeader = [
+    '#', 'Unique no', 'Plan name', 'For', 'Area length', 'Area height', 'Bricks', 'Sand (kg)', 'Cement (bags)'
+];
+let allowedColumns = [
+    'plan_no', 'name', 'plan_for', 'length_area', 'height_area', 'brick_count', 'sand', 'cement'
+];
 exports["default"] = () => new (class Plan {
     constructor() {
         new oddlyjs_1.Events(this);
@@ -3067,6 +3130,65 @@ exports["default"] = () => new (class Plan {
         });
         $('#plans').html(formated);
     }
+    async downloadCSV(e) {
+        const plans = e.currentTarget.dataset.plans;
+        const response = await (0, fetch_1.default)('/download/csv', {
+            body: {
+                data: JSON.parse(plans),
+                tableHeader,
+                allowedColumns
+            }
+        });
+        if (response.successful) {
+            const anchor = $('#download-anchor');
+            anchor.attr('href', `/assets/downloads/tmp/${response.filename}`);
+            anchor[0].click();
+        }
+    }
+});
+
+
+/***/ }),
+
+/***/ "./public/assets/js/src/events/Search.ts":
+/*!***********************************************!*\
+  !*** ./public/assets/js/src/events/Search.ts ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const oddlyjs_1 = __webpack_require__(/*! oddlyjs */ "../oddlyjs/index.ts");
+const fetch_1 = __webpack_require__(/*! ../helpers/fetch */ "./public/assets/js/src/helpers/fetch.ts");
+exports["default"] = () => new (class Search {
+    constructor() {
+        new oddlyjs_1.Events(this);
+    }
+    async search() {
+        const response = await (0, fetch_1.fetchText)('http://localhost:5000/search', {
+            body: {
+                text: $('#query-text').val()
+            }
+        });
+        try {
+            const products = JSON.parse(response.trim());
+            let f = '';
+            products.forEach(element => {
+                f += `
+					<div>
+            <div class="image--back" style="border-radius: 6px; height: 20rem; background-image: url('${element.image}');"></div>
+            <h4>${element.title}</h4>
+            <p>R${element.price}</p>
+        	</div>
+				`;
+            });
+            console.log(products);
+            $('#products').html(f);
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
 });
 
 
@@ -3142,11 +3264,15 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const user_1 = __importDefault(__webpack_require__(/*! ./user */ "./public/assets/js/src/events/user.ts"));
 const Plan_1 = __importDefault(__webpack_require__(/*! ./Plan */ "./public/assets/js/src/events/Plan.ts"));
 const Opening_1 = __importDefault(__webpack_require__(/*! ./Opening */ "./public/assets/js/src/events/Opening.ts"));
+const Foundation_1 = __importDefault(__webpack_require__(/*! ./Foundation */ "./public/assets/js/src/events/Foundation.ts"));
+const Search_1 = __importDefault(__webpack_require__(/*! ./Search */ "./public/assets/js/src/events/Search.ts"));
 const Util_1 = __importDefault(__webpack_require__(/*! ./Util */ "./public/assets/js/src/events/Util.ts"));
 exports["default"] = () => {
     (0, user_1.default)();
     (0, Plan_1.default)();
     (0, Opening_1.default)();
+    (0, Foundation_1.default)();
+    (0, Search_1.default)();
     (0, Util_1.default)();
 };
 
@@ -3263,10 +3389,16 @@ exports.hideError = hideError;
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.fetchText = void 0;
 exports["default"] = async (uri, { method = 'POST', headers = { 'Content-Type': 'application/json;charset=utf-8' }, body = {} } = {}) => {
     const response = await fetch(uri, { method, headers, body: JSON.stringify(body) });
     return await response.json();
 };
+const fetchText = async (uri, { method = 'POST', headers = { 'Content-Type': 'application/json;charset=utf-8' }, body = {} } = {}) => {
+    const response = await fetch(uri, { method, headers, body: JSON.stringify(body) });
+    return await response.text();
+};
+exports.fetchText = fetchText;
 
 
 /***/ }),

@@ -7,7 +7,7 @@
                 <h1>New material.</h1>
                 <p>Add material to your plan</p>
             </div>
-            <svg class="image--icon" onclick "Util.closeModal('new-opening')">
+            <svg class="image--icon" {{click "Util.closeModal('new-opening')"}}>
                 <use href="#cross"></use>
             </svg>
         </div>
@@ -19,21 +19,29 @@
             </div>
 
             <div class="input">
+                <input type="number" id="quantity" value="1" placeholder="Quantity">
+            </div>
+
+            <div class="input">
                 <label class="input__label" for="opening-kind">Material kind</label>
-                <select id="opening-kind">
+                <select id="opening-kind" {{change "Opening.showKind()"}}>
                     <option value="select">-- Select --</option>
                     <option value="door">Door</option>
                     <option value="window">Window</option>
                 </select>
             </div>
 
-            <div class="twin-inputs flex flex--j-space-between margin--top-1">
-                <div class="input">
-                    <input type="text" id="area-length" placeholder="Area length (in meters)">
-                </div>
-                <div class="input">
-                    <input type="text" id="area-height" placeholder="Area height (in meters)">
-                </div>
+            <div class="input hide margin--top-1" id="door-selection">
+                <label class="input__label" for="door-kind">Door selection</label>
+                <select id="door-kind">
+                    <option value="select">-- Select --</option>
+                    <option value="single leaf">Single leaf</option>
+                    <option value="double leaf">Double leaf</option>
+                    <option value="2 pane sliding door">2 pane sliding door</option>
+                    <option value="4 pane sliding door">4 pane sliding door</option>
+                    <option value="single garage door">Single garage door</option>
+                    <option value="double garage door">Double garage door</option>
+                </select>
             </div>
 
         </div>

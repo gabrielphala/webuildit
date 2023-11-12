@@ -1,4 +1,5 @@
 import Plan from "../models/Plan"
+import Opening from "../models/Opening"
 
 import v from "../helpers/Validation"
 import { makeId } from "../helpers/String";
@@ -32,8 +33,11 @@ export default class PlanServices {
                 'Area height': { value: height_area, max: 11 }
             });
 
-            if (isNaN(length_area) || !isNaN(length_area) && parseInt(length_area) <= 0) throw 'Area length must be a valid number';
-            if (isNaN(height_area) || !isNaN(height_area) && parseInt(height_area) <= 0) throw 'Area height must be a valid number';
+            if (/^[0-9a-z\s-_]+$/.test(name)) throw 'Name should have letters, numbers, -, space, or underscore';
+            if (/^[0-9a-z\s-_]+$/.test(plan_for)) throw 'Name should have letters, numbers, -, space, or underscore';
+
+            if (!(parseFloat(length_area) > 0)) throw 'Length should be a valid number';
+            if (!(parseFloat(height_area) > 0)) throw 'Height should be a valid number';
 
             const { bricks, cement, sand } = PlanServices.calculateMaterialUsage(length_area, height_area)
 
@@ -45,7 +49,7 @@ export default class PlanServices {
                 length_area,
                 height_area,
                 brick_count: bricks,
-                cement,
+                cement: Math.round(cement / 50),
                 sand
             });
 
@@ -66,8 +70,11 @@ export default class PlanServices {
                 'Area height': { value: height_area, max: 11 }
             });
 
-            if (isNaN(length_area) || !isNaN(length_area) && parseInt(length_area) <= 0) throw 'Area length must be a valid number';
-            if (isNaN(height_area) || !isNaN(height_area) && parseInt(height_area) <= 0) throw 'Area height must be a valid number';
+            if (/^[0-9a-z\s-_]+$/.test(name)) throw 'Name should have letters, numbers, -, space, or underscore';
+            if (/^[0-9a-z\s-_]+$/.test(plan_for)) throw 'Name should have letters, numbers, -, space, or underscore';
+
+            if (!(parseFloat(length_area) > 0)) throw 'Length should be a valid number';
+            if (!(parseFloat(height_area) > 0)) throw 'Height should be a valid number';
 
             const { bricks, cement, sand } = PlanServices.calculateMaterialUsage(length_area, height_area)
 
@@ -79,7 +86,7 @@ export default class PlanServices {
                     length_area,
                     height_area,
                     brick_count: bricks,
-                    cement,
+                    cement: Math.round(cement / 50),
                     sand
                 }
             )
@@ -104,6 +111,8 @@ export default class PlanServices {
         try {
 
             const { query } = body;
+
+            if (/^[0-9a-z\s-_]+$/.test(query)) throw 'Search term should have letters, numbers, -, space, or underscore';
 
             wrapRes.plans = await Plan.search({
                 condition: [
@@ -148,6 +157,10 @@ export default class PlanServices {
     static async removePlan (wrapRes: IResponse, body: IAny, _: IAny): Promise<IResponse> {
         try {
             await Plan.update({ plan_id: body.id }, {
+                is_removed: true
+            })
+
+            await Opening.update({ plan_id: body.id }, {
                 is_removed: true
             })
 
