@@ -3150,6 +3150,44 @@ exports["default"] = () => new (class Plan {
 
 /***/ }),
 
+/***/ "./public/assets/js/src/events/Roof.ts":
+/*!*********************************************!*\
+  !*** ./public/assets/js/src/events/Roof.ts ***!
+  \*********************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const oddlyjs_1 = __webpack_require__(/*! oddlyjs */ "../oddlyjs/index.ts");
+const error_container_1 = __webpack_require__(/*! ../helpers/error-container */ "./public/assets/js/src/helpers/error-container.ts");
+const modal_1 = __webpack_require__(/*! ../helpers/modal */ "./public/assets/js/src/helpers/modal.ts");
+const fetch_1 = __importDefault(__webpack_require__(/*! ../helpers/fetch */ "./public/assets/js/src/helpers/fetch.ts"));
+exports["default"] = () => new (class Roof {
+    constructor() {
+        new oddlyjs_1.Events(this);
+    }
+    async add(e) {
+        e.preventDefault();
+        const response = await (0, fetch_1.default)('/roof/add', {
+            body: {
+                plan_id: $('#plan-id').val(),
+                kind: $('#roof-kind').val()
+            }
+        });
+        if (response.successful) {
+            (0, modal_1.closeModal)('new-roof');
+            return (0, oddlyjs_1.Refresh)();
+        }
+        (0, error_container_1.showError)('roof', response.error);
+    }
+});
+
+
+/***/ }),
+
 /***/ "./public/assets/js/src/events/Search.ts":
 /*!***********************************************!*\
   !*** ./public/assets/js/src/events/Search.ts ***!
@@ -3266,6 +3304,7 @@ const Plan_1 = __importDefault(__webpack_require__(/*! ./Plan */ "./public/asset
 const Opening_1 = __importDefault(__webpack_require__(/*! ./Opening */ "./public/assets/js/src/events/Opening.ts"));
 const Foundation_1 = __importDefault(__webpack_require__(/*! ./Foundation */ "./public/assets/js/src/events/Foundation.ts"));
 const Search_1 = __importDefault(__webpack_require__(/*! ./Search */ "./public/assets/js/src/events/Search.ts"));
+const Roof_1 = __importDefault(__webpack_require__(/*! ./Roof */ "./public/assets/js/src/events/Roof.ts"));
 const Util_1 = __importDefault(__webpack_require__(/*! ./Util */ "./public/assets/js/src/events/Util.ts"));
 exports["default"] = () => {
     (0, user_1.default)();
@@ -3273,6 +3312,7 @@ exports["default"] = () => {
     (0, Opening_1.default)();
     (0, Foundation_1.default)();
     (0, Search_1.default)();
+    (0, Roof_1.default)();
     (0, Util_1.default)();
 };
 

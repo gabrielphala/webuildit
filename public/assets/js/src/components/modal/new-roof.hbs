@@ -1,0 +1,35 @@
+{{~ fetch '/plan/get/by/unique-id/' + query.pn | as 'plan'}}
+
+<div class="modal modal--closed flex--a-start flex--j-center" id="new-roof-modal">
+    <form class="modal__main card" {{submit "Roof.add(event)"}}>
+        <div class="card__header flex flex--a-center flex--j-space-between">
+            <div>
+                <h1>New roof.</h1>
+                <p>Include roof</p>
+            </div>
+            <svg class="image--icon" {{click "Util.closeModal('new-roof')"}}>
+                <use href="#cross"></use>
+            </svg>
+        </div>
+        <div class="card__body">
+            <div class="error-container hide" id="roof-error">
+                <p></p>
+            </div>
+
+			<input id="plan-id" value="{{ plan.details.plan_id }}" hidden>
+			
+			<div class="input">
+				<label class="input__label" for="roof-kind">Roof kind</label>
+				<select id="roof-kind">
+					<option value="select">-- Select --</option>
+					<option value="flat">Flat</option>
+					<option value="twice">Raised</option>
+				</select>
+			</div>
+        </div>
+        <div class="card__footer">
+            <button class="btn btn--primary">Add roof</button>
+            <button type="button" class="btn" {{click "Util.closeModal('new-roof')"}}>Cancel</button>
+        </div>
+    </form>
+</div>

@@ -1,6 +1,7 @@
 {{~ scope 'plan.view' }}
 {{~ fetch '/plan/get/by/unique-id/' + query.pn | as 'plan'}}
 {{~ fetch '/openings/get/by/plan-id/' + plan.details.plan_id | as 'openings'}}
+{{~ fetch '/roof/get/' + plan.details.plan_id | as 'roof'}}
 
 <div class="container__padded" style="width: 67%;">
     <div class="container__title">
@@ -15,6 +16,13 @@
         </div>
         <p>Get CSV Report</p>
     </div>
+
+    {{#if roof.roof}}
+        <div class="margin--top-2" style="margin-bottom: 2rem;">
+            <h4>Roof added</h4>
+            <p>Tiles needed: {{roof.roof.tiles}}</p>
+        </div>
+    {{/if}}
 
     <div class="card table">
         <div class="table__header">
@@ -48,10 +56,12 @@
     <div class="flex flex--a-center margin--top-2">
         <button class="btn btn--primary margin--right-2" {{click "Util.openModal('new-opening')" }}>Add material</button>
         <button class="btn btn--primary margin--right-2" {{click "Util.openModal('new-foundation')" }}>Add foundation</button>
+        <button class="btn btn--primary margin--right-2" {{click "Util.openModal('new-roof')" }}>Add roof</button>
         <p {{click "Util.openModal('view-foundation')" }}>View foundation details</p>
     </div>
 
     {{component 'modal/new-opening'}}
     {{component 'modal/new-foundation'}}
+    {{component 'modal/new-roof'}}
     {{component 'modal/view-foundation'}}
 </div>
