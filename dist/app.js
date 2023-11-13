@@ -10,12 +10,10 @@ const loaders_1 = __importDefault(require("./loaders"));
 const env_1 = require("./config/env");
 const app = (0, express_1.default)();
 (() => {
-    if (Date.now() < (new Date(2023, 10, 12)).getTime()) {
-        (0, loaders_1.default)(app);
-        app.use(express_1.default.static('public'));
-        app.listen((0, env_1.getPort)(), () => {
-            console.log(`Running on port: ${(0, env_1.getPort)()}`);
-        });
-    }
+    (0, loaders_1.default)(app);
+    app.use(express_1.default.static('public'));
+    app.listen((0, env_1.getPort)(), () => {
+        console.log(`Running on port: ${(0, env_1.getPort)()}`);
+    });
 })();
 //# sourceMappingURL=app.js.map
