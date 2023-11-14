@@ -17,9 +17,9 @@ class UserServices {
                 'Password': { value: body.password, min: 8, max: 30 },
                 'Confirm password': { value: body.passwordAgain, min: 8, max: 30, is: ['Password', 'Passwords do not match'] },
             });
-            if (!(/^[a-z\s]+$/.test(body.firstname)))
+            if (!(/^[a-zA-Z\s]+$/.test(body.firstname)))
                 throw 'First name should be alphabets or space';
-            if (!(/^[a-z\s]+$/.test(body.lastname)))
+            if (!(/^[a-zA-Z\s]+$/.test(body.lastname)))
                 throw 'Last name should be alphabets or space';
             if (!(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(body.email)))
                 throw 'Email address is invalid';
@@ -77,9 +77,9 @@ class UserServices {
                 'Last name': { value: lastname, min: 2, max: 20 },
                 'Email address': { value: email, min: 5, max: 50 }
             });
-            if (!(/^[a-z\s]+$/.test(body.firstname)))
+            if (!(/^[a-zA-Z\s]+$/.test(body.firstname)))
                 throw 'First name should be alphabets or space';
-            if (!(/^[a-z\s]+$/.test(body.lastname)))
+            if (!(/^[a-zA-Z\s]+$/.test(body.lastname)))
                 throw 'Last name should be alphabets or space';
             if (!(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(body.email)))
                 throw 'Email address is invalid';

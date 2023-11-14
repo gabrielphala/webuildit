@@ -17,8 +17,8 @@ export default class UserServices {
                 'Confirm password': { value: body.passwordAgain, min: 8, max: 30, is: ['Password', 'Passwords do not match'] },
             });
 
-            if (!(/^[a-z\s]+$/.test(body.firstname))) throw 'First name should be alphabets or space'
-            if (!(/^[a-z\s]+$/.test(body.lastname))) throw 'Last name should be alphabets or space'
+            if (!(/^[a-zA-Z\s]+$/.test(body.firstname))) throw 'First name should be alphabets or space'
+            if (!(/^[a-zA-Z\s]+$/.test(body.lastname))) throw 'Last name should be alphabets or space'
             if (!(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(body.email))) throw 'Email address is invalid'
 
             const userDetails = await User.insert({
@@ -85,8 +85,8 @@ export default class UserServices {
                 'Email address': { value: email, min: 5, max: 50 }
             });
 
-            if (!(/^[a-z\s]+$/.test(body.firstname))) throw 'First name should be alphabets or space'
-            if (!(/^[a-z\s]+$/.test(body.lastname))) throw 'Last name should be alphabets or space'
+            if (!(/^[a-zA-Z\s]+$/.test(body.firstname))) throw 'First name should be alphabets or space'
+            if (!(/^[a-zA-Z\s]+$/.test(body.lastname))) throw 'Last name should be alphabets or space'
             if (!(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(body.email))) throw 'Email address is invalid'
 
             const userExists = await User.exists({
