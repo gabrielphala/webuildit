@@ -12,6 +12,13 @@ const openings = {
         'double leaf': [1.8, 2.1],
         'single garage door': [2.44, 2.13],
         'double garage door': [4.88, 2.13],
+    },
+    window: {
+        '1': [1.2, 1.8],
+        '2': [1.4, 1.8],
+        '3': [2, 2],
+        '4': [2.2, 2.4],
+        '5': [3, 3]
     }
 };
 class PlanServices {

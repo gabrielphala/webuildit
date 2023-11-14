@@ -2958,6 +2958,8 @@ exports["default"] = () => new (class Opening {
         let opening, kind = $('#opening-kind').val();
         if (kind == 'door')
             opening = $('#door-kind').val();
+        else if (kind == 'window')
+            opening = $('#window-kind').val();
         const response = await (0, fetch_1.default)('/opening/add', {
             body: {
                 plan_id: $('#plan-id').val(),
@@ -2981,6 +2983,11 @@ exports["default"] = () => new (class Opening {
         }
         else if (kind == 'door') {
             $('#door-selection').show();
+            $('#window-selection').hide();
+        }
+        else if (kind == 'window') {
+            $('#door-selection').hide();
+            $('#window-selection').show();
         }
     }
     async search(plan_id) {
