@@ -33,8 +33,8 @@ export default class PlanServices {
                 'Area height': { value: height_area, max: 11 }
             });
 
-            if (/^[0-9a-zA-Z\s-_]+$/.test(name)) throw 'Name should have letters, numbers, -, space, or underscore';
-            if (/^[0-9a-zA-Z\s-_]+$/.test(plan_for)) throw 'Name should have letters, numbers, -, space, or underscore';
+            if (!(/^[0-9a-zA-Z\s-_]+$/.test(name))) throw 'Name should have letters, numbers, -, space, or underscore';
+            if (!(/^[0-9a-zA-Z\s-_]+$/.test(plan_for))) throw 'Name should have letters, numbers, -, space, or underscore';
 
             if (!(parseFloat(length_area) > 0)) throw 'Length should be a valid number';
             if (!(parseFloat(height_area) > 0)) throw 'Height should be a valid number';
@@ -70,8 +70,8 @@ export default class PlanServices {
                 'Area height': { value: height_area, max: 11 }
             });
 
-            if (/^[0-9a-zA-Z\s-_]+$/.test(name)) throw 'Name should have letters, numbers, -, space, or underscore';
-            if (/^[0-9a-zA-Z\s-_]+$/.test(plan_for)) throw 'Name should have letters, numbers, -, space, or underscore';
+            if (!(/^[0-9a-zA-Z\s-_]+$/.test(name))) throw 'Name should have letters, numbers, -, space, or underscore';
+            if (!(/^[0-9a-zA-Z\s-_]+$/.test(plan_for))) throw 'Name should have letters, numbers, -, space, or underscore';
 
             if (!(parseFloat(length_area) > 0)) throw 'Length should be a valid number';
             if (!(parseFloat(height_area) > 0)) throw 'Height should be a valid number';
@@ -112,7 +112,7 @@ export default class PlanServices {
 
             const { query } = body;
 
-            if (/^[0-9a-zA-Z\s-_]+$/.test(query)) throw 'Search term should have letters, numbers, -, space, or underscore';
+            if (!(/^[0-9a-zA-Z\s-_]+$/.test(query))) throw 'Search term should have letters, numbers, -, space, or underscore';
 
             wrapRes.plans = await Plan.search({
                 condition: [
