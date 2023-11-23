@@ -2894,6 +2894,57 @@ const middleware_1 = __importDefault(__webpack_require__(/*! ./middleware */ "./
 
 /***/ }),
 
+/***/ "./public/assets/js/src/events/Cart.ts":
+/*!*********************************************!*\
+  !*** ./public/assets/js/src/events/Cart.ts ***!
+  \*********************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const oddlyjs_1 = __webpack_require__(/*! oddlyjs */ "../oddlyjs/index.ts");
+const fetch_1 = __importDefault(__webpack_require__(/*! ../helpers/fetch */ "./public/assets/js/src/helpers/fetch.ts"));
+exports["default"] = () => new (class Cart {
+    constructor() {
+        new oddlyjs_1.Events(this);
+    }
+    async add(item, image, price) {
+        const response = await (0, fetch_1.default)('/cart/add', {
+            body: {
+                item,
+                image,
+                price
+            }
+        });
+    }
+    async increase(id) {
+        const response = await (0, fetch_1.default)('/cart/increase', {
+            body: {
+                id
+            }
+        });
+        (0, oddlyjs_1.Refresh)();
+    }
+    async decrease(id) {
+        const response = await (0, fetch_1.default)('/cart/decrease', {
+            body: {
+                id
+            }
+        });
+        (0, oddlyjs_1.Refresh)();
+    }
+    async clear() {
+        const response = await (0, fetch_1.default)('/cart/clear');
+        (0, oddlyjs_1.Refresh)();
+    }
+});
+
+
+/***/ }),
+
 /***/ "./public/assets/js/src/events/Foundation.ts":
 /*!***************************************************!*\
   !*** ./public/assets/js/src/events/Foundation.ts ***!
@@ -3199,15 +3250,22 @@ exports["default"] = () => new (class Roof {
 /*!***********************************************!*\
   !*** ./public/assets/js/src/events/Search.ts ***!
   \***********************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const oddlyjs_1 = __webpack_require__(/*! oddlyjs */ "../oddlyjs/index.ts");
 const fetch_1 = __webpack_require__(/*! ../helpers/fetch */ "./public/assets/js/src/helpers/fetch.ts");
+const Cart_1 = __importDefault(__webpack_require__(/*! ./Cart */ "./public/assets/js/src/events/Cart.ts"));
 exports["default"] = () => new (class Search {
     constructor() {
         new oddlyjs_1.Events(this);
+        window['addToCart'] = (item, image, price) => {
+            (0, Cart_1.default)().add(item, image, price);
+        };
     }
     async search() {
         const response = await (0, fetch_1.fetchText)('http://localhost:5000/search', {
@@ -3221,13 +3279,13 @@ exports["default"] = () => new (class Search {
             products.forEach(element => {
                 f += `
 					<div>
-            <div class="image--back" style="border-radius: 6px; height: 20rem; background-image: url('${element.image}');"></div>
-            <h4>${element.title}</h4>
-            <p>R${element.price}</p>
-        	</div>
+						<div class="image--back" style="border-radius: 6px; height: 20rem; background-image: url('${element.image}');"></div>
+						<h4>${element.title}</h4>
+						<p>R${element.price}</p>
+						<button onclick="addToCart('${element.title}', '${element.image}', '${element.price}')">Add to cart</button>
+        			</div>
 				`;
             });
-            console.log(products);
             $('#products').html(f);
         }
         catch (error) {
@@ -3311,6 +3369,7 @@ const Plan_1 = __importDefault(__webpack_require__(/*! ./Plan */ "./public/asset
 const Opening_1 = __importDefault(__webpack_require__(/*! ./Opening */ "./public/assets/js/src/events/Opening.ts"));
 const Foundation_1 = __importDefault(__webpack_require__(/*! ./Foundation */ "./public/assets/js/src/events/Foundation.ts"));
 const Search_1 = __importDefault(__webpack_require__(/*! ./Search */ "./public/assets/js/src/events/Search.ts"));
+const Cart_1 = __importDefault(__webpack_require__(/*! ./Cart */ "./public/assets/js/src/events/Cart.ts"));
 const Roof_1 = __importDefault(__webpack_require__(/*! ./Roof */ "./public/assets/js/src/events/Roof.ts"));
 const Util_1 = __importDefault(__webpack_require__(/*! ./Util */ "./public/assets/js/src/events/Util.ts"));
 exports["default"] = () => {
@@ -3319,6 +3378,7 @@ exports["default"] = () => {
     (0, Opening_1.default)();
     (0, Foundation_1.default)();
     (0, Search_1.default)();
+    (0, Cart_1.default)();
     (0, Roof_1.default)();
     (0, Util_1.default)();
 };
@@ -3512,6 +3572,11 @@ exports["default"] = () => {
     (0, oddlyjs_1.Route)({
         name: 'search',
         url: '/search',
+        layoutpath: 'info'
+    });
+    (0, oddlyjs_1.Route)({
+        name: 'cart',
+        url: '/cart',
         layoutpath: 'info'
     });
     (0, oddlyjs_1.Route)({

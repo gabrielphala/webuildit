@@ -27,9 +27,9 @@ class PlanServices {
                 'Area length': { value: length_area, max: 11 },
                 'Area height': { value: height_area, max: 11 }
             });
-            if (/^[0-9a-zA-Z\s-_]+$/.test(name))
+            if (!(/^[0-9a-zA-Z\s-_]+$/.test(name)))
                 throw 'Name should have letters, numbers, -, space, or underscore';
-            if (/^[0-9a-zA-Z\s-_]+$/.test(plan_for))
+            if (!(/^[0-9a-zA-Z\s-_]+$/.test(plan_for)))
                 throw 'Name should have letters, numbers, -, space, or underscore';
             if (!(parseFloat(length_area) > 0))
                 throw 'Length should be a valid number';
@@ -63,9 +63,9 @@ class PlanServices {
                 'Area length': { value: length_area, max: 11 },
                 'Area height': { value: height_area, max: 11 }
             });
-            if (/^[0-9a-zA-Z\s-_]+$/.test(name))
+            if (!(/^[0-9a-zA-Z\s-_]+$/.test(name)))
                 throw 'Name should have letters, numbers, -, space, or underscore';
-            if (/^[0-9a-zA-Z\s-_]+$/.test(plan_for))
+            if (!(/^[0-9a-zA-Z\s-_]+$/.test(plan_for)))
                 throw 'Name should have letters, numbers, -, space, or underscore';
             if (!(parseFloat(length_area) > 0))
                 throw 'Length should be a valid number';
@@ -102,7 +102,7 @@ class PlanServices {
     static async searchUserPlans(wrapRes, body, { userInfo }) {
         try {
             const { query } = body;
-            if (/^[0-9a-zA-Z\s-_]+$/.test(query))
+            if (!(/^[0-9a-zA-Z\s-_]+$/.test(query)))
                 throw 'Search term should have letters, numbers, -, space, or underscore';
             wrapRes.plans = await Plan_1.default.search({
                 condition: [

@@ -34,6 +34,8 @@ class FoundationServices {
             const foundation_vol = floor_area * .09;
             const found_cement = (foundation_vol * (1 / 7)) * 150;
             const found_sand = (foundation_vol * (6 / 7)) * 35;
+            if ((await Foundation_1.default.exists({ plan_id })).found)
+                throw 'Foundation already added';
             await Foundation_1.default.insert({
                 plan_id,
                 wall_height,

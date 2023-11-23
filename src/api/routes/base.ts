@@ -8,6 +8,7 @@ export default (app: Application) => {
     app.get('/', baseController.render('Home'))
     app.get('/search', isUserLoggedIn, baseController.render('Search'))
     app.get('/plans', isUserLoggedIn, baseController.render('Plans'))
+    app.get('/cart', isUserLoggedIn, baseController.render('Carts'))
     app.get('/plan/view', isUserLoggedIn, baseController.render('Plan view'))
     app.get('/history', isUserLoggedIn, baseController.render('History'))
     app.get('/profile', isUserLoggedIn, baseController.render('Profile'))

@@ -1,0 +1,24 @@
+{{~ scope 'cart' }}
+{{~ fetch 'cart/get/all' | as 'cart'}}
+
+<div id="home" style="padding: 5rem 15%;">
+    <h4>Cart</h4>
+    <p style="margin-bottom: 2rem;">Manage your products from here</p>
+
+    <div id="products" style="display: grid; gap: 1rem; grid-template-columns: repeat(4, 1fr);" class="margin--top-2">
+        {{#each cart.products}}
+            <div>
+                <div class="image--back" style="border-radius: 6px; height: 20rem; background-image: url('{{this.image}}');">
+                </div>
+                <h4>{{this.item}}</h4>
+                <p>R{{this.price}}</p>
+                <p style="margin-bottom: 2rem;">Quantity: {{this.quantity}}</p>
+
+                <button class="btn btn--primary" {{click "Cart.increase('<<this.cart_item_id>>')"}}>Add</button>
+                <button class="btn" {{click "Cart.decrease('<<this.cart_item_id>>')"}}>Remove</button>
+            </div>
+        {{/each}}
+
+    </div>
+    <p style="margin-top: 3rem; color: darkred; cursor: pointer;" {{click "Cart.clear()"}}>Remove all from cart</p>
+</div>

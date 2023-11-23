@@ -40,6 +40,9 @@ export default class FoundationServices {
 
 			const found_cement = (foundation_vol * (1 / 7)) * 150;
         	const found_sand = (foundation_vol * (6 / 7)) * 35;
+
+            if ((await Foundation.exists({ plan_id })).found)
+				throw 'Foundation already added';
 			
             await Foundation.insert({
 				plan_id,

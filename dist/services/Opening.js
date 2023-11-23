@@ -75,7 +75,7 @@ class PlanServices {
     static async search(wrapRes, body) {
         try {
             const { plan_id, query } = body;
-            if (/^[0-9a-zA-Z\s-_]+$/.test(query))
+            if (!(/^[0-9a-zA-Z\s-_]+$/.test(query)))
                 throw 'Search term should have letters, numbers, -, space, or underscore';
             wrapRes.openings = await Opening_1.default.search({
                 condition: [

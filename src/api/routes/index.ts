@@ -5,6 +5,7 @@ import userRoutes from "./user"
 import planRoutes from "./plan"
 import openingRoutes from "./opening"
 import foundationRoutes from "./foundation"
+import cartRoutes from "./cart"
 
 export default (app: Application) : void => {
     baseRoutes(app)
@@ -12,4 +13,5 @@ export default (app: Application) : void => {
     planRoutes(app)
     openingRoutes(app)
     foundationRoutes(app)
+    cartRoutes(app)
 }

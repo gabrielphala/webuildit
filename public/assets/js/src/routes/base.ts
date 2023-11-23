@@ -14,6 +14,12 @@ export default (): void => {
     })
 
     Route({
+        name: 'cart',
+        url: '/cart',
+        layoutpath: 'info'
+    })
+
+    Route({
         name: 'plans',
         url: '/plans',
         layoutpath: 'info'
