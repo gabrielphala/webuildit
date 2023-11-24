@@ -64,6 +64,9 @@ export default class CartServices {
 				}
 			})
 
+			if (product.quantity <= 0)
+ 				return wrapRes;
+			
 			product.quantity--;
 
 			product.save()

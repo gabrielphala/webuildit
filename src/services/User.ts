@@ -5,6 +5,8 @@ import hasher from "../helpers/Hasher"
 import jwt from "../helpers/Jwt"
 
 import { IAny, IResponse } from "../interfaces";
+import Plan from "../models/Plan";
+import Opening from "src/models/Opening";
 
 export default class UserServices {
     static async signUp (wrapRes: IResponse, body: IAny): Promise<IResponse> {
@@ -119,6 +121,18 @@ export default class UserServices {
     static async deleteAccount (wrapRes: IResponse, body: IAny, store: IAny): Promise<IResponse> {
         try {
             User.update({ user_id: store.userInfo.user_id }, { is_removed: true })
+
+            const plans = await Plan.find({
+                condition: {
+                    user_id: store.userInfo.user_id
+                }
+            })
+
+            plans.forEach(async (plan) => {
+                await Opening.update({ plan_id: plan.plan_id }, {
+                    is_removed: true
+                })
+            })
 
             wrapRes.successful = true;
         } catch (error) { throw error; }
