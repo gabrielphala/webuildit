@@ -6,7 +6,7 @@ import jwt from "../helpers/Jwt"
 
 import { IAny, IResponse } from "../interfaces";
 import Plan from "../models/Plan";
-import Opening from "src/models/Opening";
+import Opening from "../models/Opening";
 
 export default class UserServices {
     static async signUp (wrapRes: IResponse, body: IAny): Promise<IResponse> {
@@ -18,6 +18,7 @@ export default class UserServices {
                 'Password': { value: body.password, min: 8, max: 30 },
                 'Confirm password': { value: body.passwordAgain, min: 8, max: 30, is: ['Password', 'Passwords do not match'] },
             });
+
 
             if (!(/^[a-zA-Z\s]+$/.test(body.firstname))) throw 'First name should be alphabets or space'
             if (!(/^[a-zA-Z\s]+$/.test(body.lastname))) throw 'Last name should be alphabets or space'

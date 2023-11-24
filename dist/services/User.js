@@ -7,6 +7,8 @@ const User_1 = __importDefault(require("../models/User"));
 const Validation_1 = __importDefault(require("../helpers/Validation"));
 const Hasher_1 = __importDefault(require("../helpers/Hasher"));
 const Jwt_1 = __importDefault(require("../helpers/Jwt"));
+const Plan_1 = __importDefault(require("../models/Plan"));
+const Opening_1 = __importDefault(require("../models/Opening"));
 class UserServices {
     static async signUp(wrapRes, body) {
         try {
@@ -109,6 +111,16 @@ class UserServices {
     static async deleteAccount(wrapRes, body, store) {
         try {
             User_1.default.update({ user_id: store.userInfo.user_id }, { is_removed: true });
+            const plans = await Plan_1.default.find({
+                condition: {
+                    user_id: store.userInfo.user_id
+                }
+            });
+            plans.forEach(async (plan) => {
+                await Opening_1.default.update({ plan_id: plan.plan_id }, {
+                    is_removed: true
+                });
+            });
             wrapRes.successful = true;
         }
         catch (error) {

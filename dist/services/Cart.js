@@ -59,6 +59,8 @@ class CartServices {
                 cart_item_id: id
             }
         });
+        if (product.quantity <= 0)
+            return wrapRes;
         product.quantity--;
         product.save();
         return wrapRes;
