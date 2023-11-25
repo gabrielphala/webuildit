@@ -12,9 +12,10 @@
             </svg>
         </div>
         <div class="card__body">
-            <p>Height: {{ foundation.details.height }}</p>
-            <p>Width: {{ foundation.details.width }}</p>
-            <p>Concrete volume (m<sup>3</sup>): {{ foundation.details.concrete }}</p>
+            <p>Foundation area: {{ foundation.details.floor_area }}m<sup>2</sup></p>
+            <p>Height: {{ foundation.details.height }}m</p>
+            <p>Perimeter: {{ foundation.details.perimeter }}m</p>
+            <p>Concrete (volume m<sup>3</sup>): {{ foundation.details.concrete }}</p>
         </div>
         <div class="card__footer">
             <button type="button" class="btn" {{click "Util.closeModal('view-foundation')"}}>Cancel</button>

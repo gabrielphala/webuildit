@@ -64,7 +64,7 @@ export default class CartServices {
 			}
 		})
 
-		if (product.quantity <= 0)
+		if (product.quantity <= 1)
 			return wrapRes;
 		
 		product.quantity--;

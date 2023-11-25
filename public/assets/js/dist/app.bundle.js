@@ -2971,7 +2971,7 @@ exports["default"] = () => new (class Foundation {
             body: {
                 plan_id: $('#w-plan-id').val(),
                 floor_area: $('#floor-area').val(),
-                wall_length: $('#length').val(),
+                wall_perimeter: $('#perimeter').val(),
                 wall_height: $('#height').val()
             }
         });
@@ -3556,7 +3556,7 @@ exports["default"] = () => {
             total += i.price * i.quantity;
         });
         if (total)
-            return total;
+            return total.toFixed(2);
         return '';
     });
 };

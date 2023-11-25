@@ -16,7 +16,7 @@ export default () => new (class Foundation {
             body: {
                 plan_id: $('#w-plan-id').val(),
                 floor_area: $('#floor-area').val(),
-                wall_length: $('#length').val(),
+                wall_perimeter: $('#perimeter').val(),
                 wall_height: $('#height').val()
             }
         })

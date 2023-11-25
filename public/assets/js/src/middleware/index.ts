@@ -19,7 +19,7 @@ export default () => {
             total += i.price * i.quantity;
         });
 
-        if (total) return total;
+        if (total) return total.toFixed(2);
 
         return ''
     })

@@ -23,18 +23,18 @@ export default class FoundationServices {
 
 	static async add (wrapRes: IResponse, body: IAny, { userInfo }: IAny): Promise<IResponse> {
         try {
-            const { plan_id, floor_area, wall_length, wall_height } = body;
+            const { plan_id, floor_area, wall_perimeter, wall_height } = body;
 
             v.validate({
-                'Wall length': { value: wall_length, max: 11 },
-                'Wall height': { value: wall_height, max: 11 }
+                'Perimeter': { value: wall_perimeter, max: 11 },
+                'Height': { value: wall_height, max: 11 }
             });
 
-            if (!(parseFloat(floor_area) > 0)) throw 'Length should be a valid number';
-            if (!(parseFloat(wall_length) > 0)) throw 'Length should be a valid number';
+            if (!(parseFloat(floor_area) > 0)) throw 'Floor area should be a valid number';
+            if (!(parseFloat(wall_perimeter) > 0)) throw 'Perimeter should be a valid number';
             if (!(parseFloat(wall_height) > 0)) throw 'Height should be a valid number';
 
-            const { bricks, cement, sand } = FoundationServices.calculateMaterialUsage(wall_length, wall_height)
+            const { bricks, cement, sand } = FoundationServices.calculateMaterialUsage(wall_perimeter, wall_height)
 
 			const foundation_vol = floor_area * .09;
 
@@ -47,8 +47,9 @@ export default class FoundationServices {
             await Foundation.insert({
 				plan_id,
                 height: wall_height,
-                width: wall_length,
-                concrete: cement + found_cement
+                perimeter: wall_perimeter,
+                concrete: cement + found_cement,
+                floor_area
             });
 
             wrapRes.successful = true;

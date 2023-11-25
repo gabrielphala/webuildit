@@ -59,7 +59,7 @@ class CartServices {
                 cart_item_id: id
             }
         });
-        if (product.quantity <= 0)
+        if (product.quantity <= 1)
             return wrapRes;
         product.quantity--;
         product.save();
