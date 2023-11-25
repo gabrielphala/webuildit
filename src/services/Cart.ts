@@ -58,20 +58,20 @@ export default class CartServices {
 	static async decrease (wrapRes: IResponse, body: IAny) : Promise<IResponse>  {
 		const { id } = body;
 
-			const product = await Cart.findOne({
-				condition: {
-					cart_item_id: id
-				}
-			})
+		const product = await Cart.findOne({
+			condition: {
+				cart_item_id: id
+			}
+		})
 
-			if (product.quantity <= 0)
- 				return wrapRes;
-			
-			product.quantity--;
+		if (product.quantity <= 0)
+			return wrapRes;
+		
+		product.quantity--;
 
-			product.save()
+		product.save()
 
-            return wrapRes;
+      	return wrapRes;
 	}
 
 	static async clear (wrapRes: IResponse, body: IAny, { userInfo }: IAny) : Promise<IResponse>  {

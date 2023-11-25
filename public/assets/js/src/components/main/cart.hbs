@@ -20,5 +20,8 @@
         {{/each}}
 
     </div>
+    {{#if cart.products}}
+        <p style="margin-top: 3rem; color: darkblue;" id="total">{{ calctot cart.products}}</p>
+    {{/if}}
     <p style="margin-top: 3rem; color: darkred; cursor: pointer;" {{click "Cart.clear()"}}>Remove all from cart</p>
 </div>

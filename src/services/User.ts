@@ -56,7 +56,7 @@ export default class UserServices {
 
             if (!userDetails) throw 'Account does not exist';
 
-            if (!hasher.isSame(userDetails.password, body.password))
+            if (!(await hasher.isSame(userDetails.password, body.password)))
                 throw 'Password is incorrect';
 
             delete userDetails.password;

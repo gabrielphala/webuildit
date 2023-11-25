@@ -53,7 +53,7 @@ class UserServices {
             let userDetails = await User_1.default.getByEmail(body.email);
             if (!userDetails)
                 throw 'Account does not exist';
-            if (!Hasher_1.default.isSame(userDetails.password, body.password))
+            if (!(await Hasher_1.default.isSame(userDetails.password, body.password)))
                 throw 'Password is incorrect';
             delete userDetails.password;
             const tokens = Jwt_1.default.get_cookie_tokens(userDetails.toObject());

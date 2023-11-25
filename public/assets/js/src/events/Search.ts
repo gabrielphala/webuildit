@@ -30,14 +30,13 @@ export default () => new (class Search {
 					<div>
 						<div class="image--back" style="border-radius: 6px; height: 20rem; background-image: url('${element.image}');"></div>
 						<h4>${element.title}</h4>
-						<p>R${element.price}</p>
-						<button onclick="addToCart('${element.title}', '${element.image}', '${element.price}')">Add to cart</button>
+						<p>R${parseFloat(element.price).toFixed(2)}</p>
+						<button onclick="addToCart('${element.title}', '${element.image}', '${parseFloat(element.price).toFixed(2)}')">Add to cart</button>
         			</div>
 				`
 			});
 
 			$('#products').html(f)
-		} catch (error) { console.log(error);
-		 }
+		} catch (error) { console.log(error); }
 	}
 });

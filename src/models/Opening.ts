@@ -10,11 +10,11 @@ export default new (class Opening extends SQLifier {
             quantity: { type: 'int', default: 1 },
             kind: { type: 'varchar', length: 11 },
             name: { type: 'varchar', length: 20 },
-            length_area: { type: 'float' },
-            height_area: { type: 'float' },
-            bricks_saved: { type: 'float' },
-            cement_saved: { type: 'float' },
-            sand_saved: { type: 'float' },
+            length_area: { type: 'float', length: '11,2' },
+            height_area: { type: 'float' , length: '11,2'},
+            bricks_saved: { type: 'int', length: 11 },
+            cement_saved: { type: 'float', length: '11,2' },
+            sand_saved: { type: 'float', length: '11,2' },
             date_created: { type: 'datetime', default: SQLDate.now },
             is_removed: { type: 'boolean', default: false }
         })

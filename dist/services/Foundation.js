@@ -38,12 +38,9 @@ class FoundationServices {
                 throw 'Foundation already added';
             await Foundation_1.default.insert({
                 plan_id,
-                wall_height,
-                wall_length,
-                floor_area,
-                brick_count: bricks,
-                cement: Math.round(cement + found_cement / 50),
-                sand: sand + found_sand
+                height: wall_height,
+                width: wall_length,
+                concrete: cement + found_cement
             });
             wrapRes.successful = true;
             return wrapRes;

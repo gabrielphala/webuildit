@@ -57,7 +57,7 @@
         <button class="btn btn--primary margin--right-2" {{click "Util.openModal('new-opening')" }}>Add material</button>
         <button class="btn btn--primary margin--right-2" {{click "Util.openModal('new-foundation')" }}>Add foundation</button>
         <button class="btn btn--primary margin--right-2" {{click "Util.openModal('new-roof')" }}>Add roof</button>
-        <p {{click "Util.openModal('view-foundation')" }}>View foundation details</p>
+        <p {{click "Util.openModal('view-foundation')" }} style="cursor: pointer;">View foundation details</p>
     </div>
 
     {{component 'modal/new-opening'}}

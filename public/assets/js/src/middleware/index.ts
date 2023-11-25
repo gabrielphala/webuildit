@@ -11,4 +11,16 @@ export default () => {
 
         next()
     })
+
+    Environment.kolijs.setHelper('calctot', (arr: any) => {
+        let total  = 0;
+
+        arr.forEach(i => {
+            total += i.price * i.quantity;
+        });
+
+        if (total) return total;
+
+        return ''
+    })
 }

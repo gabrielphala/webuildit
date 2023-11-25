@@ -1,3 +1,5 @@
+{{~ fetch 'cart/get/all' | as 'cart'}}
+
 <div class="navbar">
     <ul class="flex">
         <a href="/plans" class="flex flex--a-center" {{click "Util.nav(event)" }}>
@@ -16,7 +18,10 @@
             <svg class="image--icon">
                 <use href="#cart"></use>
             </svg>
-            <span>Cart</span>
+            <span>
+                Cart
+                <sup style="color: darkred;">{{arraylen cart.products}}</sup>
+            </span>
         </a>
         <a href="/search" class="flex flex--a-center" {{click "Util.nav(event)" }}>
             <svg class="image--icon">

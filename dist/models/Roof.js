@@ -8,7 +8,7 @@ exports.default = new (class Opening extends sqlifier_1.SQLifier {
             roof_id: { type: 'int', isAutoIncrement: true, isPrimary: true },
             plan_id: { type: 'int', ref: 'plan', refField: 'plan_id' },
             kind: { type: 'varchar', length: 11 },
-            tiles: { type: 'float' },
+            tiles: { type: 'float', length: '11,2' },
             date_created: { type: 'datetime', default: sqlifier_1.SQLDate.now },
             is_removed: { type: 'boolean', default: false }
         });

@@ -2919,6 +2919,7 @@ exports["default"] = () => new (class Cart {
                 price
             }
         });
+        (0, oddlyjs_1.Refresh)();
     }
     async increase(id) {
         const response = await (0, fetch_1.default)('/cart/increase', {
@@ -3281,8 +3282,8 @@ exports["default"] = () => new (class Search {
 					<div>
 						<div class="image--back" style="border-radius: 6px; height: 20rem; background-image: url('${element.image}');"></div>
 						<h4>${element.title}</h4>
-						<p>R${element.price}</p>
-						<button onclick="addToCart('${element.title}', '${element.image}', '${element.price}')">Add to cart</button>
+						<p>R${parseFloat(element.price).toFixed(2)}</p>
+						<button onclick="addToCart('${element.title}', '${element.image}', '${parseFloat(element.price).toFixed(2)}')">Add to cart</button>
         			</div>
 				`;
             });
@@ -3548,6 +3549,15 @@ exports["default"] = () => {
     oddlyjs_1.Middleware.repeat(async (next) => {
         oddlyjs_1.Environment.put('userDetails', (await (0, fetch_1.default)('/user/get/by/session')).details, true);
         next();
+    });
+    oddlyjs_1.Environment.kolijs.setHelper('calctot', (arr) => {
+        let total = 0;
+        arr.forEach(i => {
+            total += i.price * i.quantity;
+        });
+        if (total)
+            return total;
+        return '';
     });
 };
 

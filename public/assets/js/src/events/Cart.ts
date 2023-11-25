@@ -15,6 +15,8 @@ export default () => new (class Cart {
 				price
 			}
 		});
+
+		Refresh()
 	}
 
 	async increase (id) {
