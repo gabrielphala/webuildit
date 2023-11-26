@@ -12,7 +12,7 @@ export default class DownloadService {
                 allowedColumns: body.allowedColumns
             });
 
-            const filename = `CSV_Report_of_${body.reportName || 'basic'}_${Date.now()}.csv`;
+            const filename = `${body.reportName || 'basic'}_CSV_Report_${Date.now()}.csv`;
 
             const filePath = path.join(
                 __dirname,

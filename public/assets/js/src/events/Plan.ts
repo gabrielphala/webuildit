@@ -128,7 +128,8 @@ export default () => new (class Plan {
             body: {
                 data: JSON.parse(plans),
                 tableHeader,
-                allowedColumns
+                allowedColumns,
+                reportName: 'Plan'
             }
         });
 

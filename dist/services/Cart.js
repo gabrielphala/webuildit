@@ -59,8 +59,12 @@ class CartServices {
                 cart_item_id: id
             }
         });
-        if (product.quantity <= 1)
+        if (product.quantity <= 1) {
+            product.is_removed = 1;
+            product.quantity--;
+            product.save();
             return wrapRes;
+        }
         product.quantity--;
         product.save();
         return wrapRes;

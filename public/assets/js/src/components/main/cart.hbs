@@ -1,9 +1,12 @@
 {{~ scope 'cart' }}
 {{~ fetch 'cart/get/all' | as 'cart'}}
+{{~ json cart.products | as 'productss'}}
 
 <div id="home" style="padding: 5rem 15%;">
     <h4>Cart</h4>
     <p style="margin-bottom: 2rem;">Manage your products from here</p>
+    <p {{click "Cart.downloadCSV(event)" }} data-products='{{productss}}' style="cursor: pointer;">Export to CSV</p>
+
 
     <div id="products" style="display: grid; gap: 1rem; grid-template-columns: repeat(4, 1fr);" class="margin--top-2">
         {{#each cart.products}}
@@ -24,4 +27,6 @@
         <p style="margin-top: 3rem; color: darkblue;" id="total">{{ calctot cart.products}}</p>
     {{/if}}
     <p style="margin-top: 3rem; color: darkred; cursor: pointer;" {{click "Cart.clear()"}}>Remove all from cart</p>
+
+    <a download id="download-anchor"></a>
 </div>

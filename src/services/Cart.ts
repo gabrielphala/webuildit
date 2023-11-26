@@ -64,8 +64,13 @@ export default class CartServices {
 			}
 		})
 
-		if (product.quantity <= 1)
+		if (product.quantity <= 1) {
+			product.is_removed = 1;
+			product.quantity--;
+			product.save()
+
 			return wrapRes;
+		}
 		
 		product.quantity--;
 

@@ -2907,6 +2907,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const oddlyjs_1 = __webpack_require__(/*! oddlyjs */ "../oddlyjs/index.ts");
 const fetch_1 = __importDefault(__webpack_require__(/*! ../helpers/fetch */ "./public/assets/js/src/helpers/fetch.ts"));
+let tableHeader = [
+    '#', 'Item name', 'Price', 'Quantity', 'Image'
+];
+let allowedColumns = [
+    'item', 'price', 'quantity', 'image'
+];
 exports["default"] = () => new (class Cart {
     constructor() {
         new oddlyjs_1.Events(this);
@@ -2940,6 +2946,22 @@ exports["default"] = () => new (class Cart {
     async clear() {
         const response = await (0, fetch_1.default)('/cart/clear');
         (0, oddlyjs_1.Refresh)();
+    }
+    async downloadCSV(e) {
+        const products = e.currentTarget.dataset.products;
+        const response = await (0, fetch_1.default)('/download/csv', {
+            body: {
+                data: JSON.parse(products),
+                tableHeader,
+                allowedColumns,
+                reportName: 'Cart'
+            }
+        });
+        if (response.successful) {
+            const anchor = $('#download-anchor');
+            anchor.attr('href', `/assets/downloads/tmp/${response.filename}`);
+            anchor[0].click();
+        }
     }
 });
 
@@ -3001,6 +3023,12 @@ const oddlyjs_1 = __webpack_require__(/*! oddlyjs */ "../oddlyjs/index.ts");
 const error_container_1 = __webpack_require__(/*! ../helpers/error-container */ "./public/assets/js/src/helpers/error-container.ts");
 const modal_1 = __webpack_require__(/*! ../helpers/modal */ "./public/assets/js/src/helpers/modal.ts");
 const fetch_1 = __importDefault(__webpack_require__(/*! ../helpers/fetch */ "./public/assets/js/src/helpers/fetch.ts"));
+let tableHeader = [
+    '#', 'Kind', 'Area length', 'Area height', 'Bricks saved', 'Sand saved (kg)', 'Cement saved (bags)'
+];
+let allowedColumns = [
+    'kind', 'length_area', 'height_area', 'bricks_saved', 'sand_saved', 'cement_saved'
+];
 exports["default"] = () => new (class Opening {
     constructor() {
         new oddlyjs_1.Events(this);
@@ -3074,6 +3102,22 @@ exports["default"] = () => new (class Opening {
             }
         });
         (0, oddlyjs_1.Refresh)();
+    }
+    async downloadCSV(e) {
+        const openings = e.currentTarget.dataset.openings;
+        const response = await (0, fetch_1.default)('/download/csv', {
+            body: {
+                data: JSON.parse(openings),
+                tableHeader,
+                allowedColumns,
+                reportName: 'Material'
+            }
+        });
+        if (response.successful) {
+            const anchor = $('#download-anchor');
+            anchor.attr('href', `/assets/downloads/tmp/${response.filename}`);
+            anchor[0].click();
+        }
     }
 });
 
@@ -3195,7 +3239,8 @@ exports["default"] = () => new (class Plan {
             body: {
                 data: JSON.parse(plans),
                 tableHeader,
-                allowedColumns
+                allowedColumns,
+                reportName: 'Plan'
             }
         });
         if (response.successful) {

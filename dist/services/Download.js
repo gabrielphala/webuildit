@@ -14,7 +14,7 @@ class DownloadService {
                 tableHeader: body.tableHeader,
                 allowedColumns: body.allowedColumns
             });
-            const filename = `CSV_Report_of_${body.reportName || 'basic'}_${Date.now()}.csv`;
+            const filename = `${body.reportName || 'basic'}_CSV_Report_${Date.now()}.csv`;
             const filePath = path_1.default.join(__dirname, `../../public/assets/downloads/tmp/`);
             fs_1.default.writeFileSync(filePath + filename, html.trimStart());
             wrap_res.filename = filename;

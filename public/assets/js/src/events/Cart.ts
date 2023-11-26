@@ -2,6 +2,14 @@ import { Events, Refresh } from "oddlyjs"
 
 import fetch from "../helpers/fetch";
 
+let tableHeader = [
+    '#', 'Item name', 'Price', 'Quantity', 'Image'
+]
+
+let allowedColumns = [
+    'item', 'price', 'quantity', 'image'
+]
+
 export default () => new (class Cart {
     constructor () {
         new Events(this)
@@ -44,4 +52,25 @@ export default () => new (class Cart {
 
 		Refresh()
 	}
+
+	async downloadCSV (e: PointerEvent) {
+        const products = (e.currentTarget as HTMLElement).dataset.products as string;
+
+        const response = await fetch('/download/csv', {
+            body: {
+                data: JSON.parse(products),
+                tableHeader,
+                allowedColumns,
+				reportName: 'Cart'
+            }
+        });
+
+        if (response.successful) {
+            const anchor = $('#download-anchor')
+
+            anchor.attr('href', `/assets/downloads/tmp/${response.filename}`)
+
+            anchor[0].click();
+        }
+    }
 });

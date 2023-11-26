@@ -13,7 +13,7 @@
         <div class="input" style="flex: 0 0 50rem;">
             <input type="text" id="search-query" placeholder="Search by plan no, name, for, length... etc" {{keyup "Plan.searchUserPlans()"}}>
         </div>
-        <p {{click "Plan.downloadCSV(event)"}} data-plans='{{oen}}'>Get CSV Report</p>
+        <p {{click "Plan.downloadCSV(event)"}} data-plans='{{oen}}' style="cursor: pointer;">Get CSV Report</p>
     </div>
 
     <div class="card table">
