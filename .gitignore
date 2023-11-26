@@ -6,5 +6,4 @@ public/assets/uploads/thumbnails/*
 !public/assets/uploads/thumbnails/default-video.png
 public/assets/uploads/videos/*
 package-lock.json
-chromedriver.exe
 venv
