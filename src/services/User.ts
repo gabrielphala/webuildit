@@ -12,8 +12,8 @@ export default class UserServices {
     static async signUp (wrapRes: IResponse, body: IAny): Promise<IResponse> {
         try {
             v.validate({
-                'First name': { value: body.firstname, min: 2, max: 20 },
-                'Last name': { value: body.lastname, min: 2, max: 20 },
+                'First name': { value: body.firstname.trim(), min: 2, max: 20 },
+                'Last name': { value: body.lastname.trim(), min: 2, max: 20 },
                 'Email address': { value: body.email, min: 5, max: 50 },
                 'Password': { value: body.password, min: 8, max: 30 },
                 'Confirm password': { value: body.passwordAgain, min: 8, max: 30, is: ['Password', 'Passwords do not match'] },
@@ -23,6 +23,12 @@ export default class UserServices {
             if (!(/^[a-zA-Z\s]+$/.test(body.firstname))) throw 'First name should be alphabets or space'
             if (!(/^[a-zA-Z\s]+$/.test(body.lastname))) throw 'Last name should be alphabets or space'
             if (!(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(body.email))) throw 'Email address is invalid'
+
+            const userExists = await User.exists({
+                email: body.email
+            })
+
+            if (!userExists) throw 'Email already in use';
 
             const userDetails = await User.insert({
                 firstname: body.firstname,
@@ -46,8 +52,8 @@ export default class UserServices {
     static async signIn (wrapRes: IResponse, body: IAny): Promise<IResponse> {
         try {
             v.validate({
-                'Email address': { value: body.email, min: 3, max: 50 },
-                'Password': { value: body.password, min: 8, max: 30 }
+                'Email address': { value: body.email.trim(), min: 3, max: 50 },
+                'Password': { value: body.password.trim(), min: 8, max: 30 }
             });
 
             if (!(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(body.email))) throw 'Email address is invalid'
@@ -83,9 +89,9 @@ export default class UserServices {
             const { firstname, lastname, email } = body;
 
             v.validate({
-                'First name': { value: firstname, min: 2, max: 20 },
-                'Last name': { value: lastname, min: 2, max: 20 },
-                'Email address': { value: email, min: 5, max: 50 }
+                'First name': { value: firstname.trim(), min: 2, max: 20 },
+                'Last name': { value: lastname.trim(), min: 2, max: 20 },
+                'Email address': { value: email.trim(), min: 5, max: 50 }
             });
 
             if (!(/^[a-zA-Z\s]+$/.test(body.firstname))) throw 'First name should be alphabets or space'
@@ -97,7 +103,7 @@ export default class UserServices {
                 user_id: { $ne: store.userInfo.user_id }
             })
 
-            if (userExists.found) throw 'Email already in use';
+            if (!userExists) throw 'Email already in use';
 
             User.update({ user_id: store.userInfo.user_id }, {
                 firstname,

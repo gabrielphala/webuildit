@@ -49,7 +49,7 @@ export default class PlanServices {
                 length_area,
                 height_area,
                 brick_count: bricks,
-                cement: Math.round(cement / 50),
+                cement: Math.round(cement / 50) * 3,
                 sand
             });
 
@@ -86,7 +86,7 @@ export default class PlanServices {
                     length_area,
                     height_area,
                     brick_count: bricks,
-                    cement: Math.round(cement / 50),
+                    cement: Math.round(cement / 50) * 3,
                     sand
                 }
             )
