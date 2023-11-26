@@ -28,7 +28,7 @@ export default class UserServices {
                 email: body.email
             })
 
-            if (!userExists) throw 'Email already in use';
+            if (userExists.found) throw 'Email already in use';
 
             const userDetails = await User.insert({
                 firstname: body.firstname,
@@ -103,7 +103,7 @@ export default class UserServices {
                 user_id: { $ne: store.userInfo.user_id }
             })
 
-            if (!userExists) throw 'Email already in use';
+            if (userExists.found) throw 'Email already in use';
 
             User.update({ user_id: store.userInfo.user_id }, {
                 firstname,
