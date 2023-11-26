@@ -9,7 +9,7 @@ const path_1 = __importDefault(require("path"));
 class DownloadService {
     static async download(wrap_res, body) {
         try {
-            const html = await ejs_1.default.renderFile(path_1.default.join(__dirname, '../views/documents/csv.ejs'), {
+            const html = await ejs_1.default.renderFile(path_1.default.join(__dirname, '../../public/assets/docs/csv.ejs'), {
                 data: body.data,
                 tableHeader: body.tableHeader,
                 allowedColumns: body.allowedColumns

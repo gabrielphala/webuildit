@@ -6,7 +6,7 @@ export default class DownloadService {
     static async download (wrap_res, body) {
         try {
             const html = await ejs.renderFile(
-                path.join(__dirname, '../views/documents/csv.ejs'), {
+                path.join(__dirname, '../../public/assets/docs/csv.ejs'), {
                 data: body.data,
                 tableHeader: body.tableHeader,
                 allowedColumns: body.allowedColumns
